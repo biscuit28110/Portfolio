@@ -41,7 +41,7 @@ export default function Footer() {
           <div className="flex gap-4 text-slate-500 text-sm">
             <span>Accessibilité</span>
             <span>Confidentialité</span>
-            <span>Conditions d'utilisation</span>
+            <span>Conditions d&apos;utilisation</span>
           </div>
         </div>
       </div>

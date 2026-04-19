@@ -2,11 +2,8 @@
 
 import TypewriterText from "@/components/typewriter-text";
 import { useInView } from "react-intersection-observer";
-import { useState, useEffect } from "react";
 
 export default function Navbar() {
-  const [activeSection, setActiveSection] = useState("hero");
-  
   // About section observer
   const { ref: aboutRef, inView: isAboutInView } = useInView({
     triggerOnce: false,
@@ -30,21 +27,16 @@ export default function Navbar() {
     triggerOnce: false,
     threshold: 0.3,
   });
-  
-  // Contact section observer
-  const { ref: contactRef, inView: isContactInView } = useInView({
-    triggerOnce: false,
-    threshold: 0.3,
-  });
 
-  useEffect(() => {
-    if (isAboutInView) setActiveSection("about");
-    else if (isSkillsInView) setActiveSection("skills");
-    else if (isProjectsInView) setActiveSection("projects");
-    else if (isExperienceInView) setActiveSection("experience");
-    else if (isContactInView) setActiveSection("contact");
-    else setActiveSection("hero");
-  }, [isAboutInView, isSkillsInView, isProjectsInView, isExperienceInView, isContactInView]);
+  const activeSection = isAboutInView
+    ? "about"
+    : isSkillsInView
+      ? "skills"
+      : isProjectsInView
+        ? "projects"
+        : isExperienceInView
+          ? "experience"
+          : "hero";
 
   return (
     <nav className="bg-base-100">

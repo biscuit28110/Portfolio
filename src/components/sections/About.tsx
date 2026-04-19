@@ -1,15 +1,12 @@
 "use client";
 
 import { useInView } from "react-intersection-observer";
-import { useRef } from "react";
 
 export default function About() {
   const { ref, inView } = useInView({
     triggerOnce: false,
     threshold: 0.3,
   });
-   
-  const containerRef = useRef(null);
 
   return (
     <section
@@ -30,7 +27,7 @@ export default function About() {
           <div className="space-y-8">
             <div className="text-slate-300 leading-relaxed space-y-4">
               <p>
-                Passionné par l'informatique depuis mon plus jeune âge, je mets mes compétences techniques au service de solutions innovantes et performantes. Mon parcours mêle expertise technique et approche pédagogique, toujours guidé par la volonté de partager et transmettre.
+                Passionné par l&apos;informatique depuis mon plus jeune âge, je mets mes compétences techniques au service de solutions innovantes et performantes. Mon parcours mêle expertise technique et approche pédagogique, toujours guidé par la volonté de partager et transmettre.
               </p>
               
               <div className="space-y-3">
@@ -54,7 +51,7 @@ export default function About() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">Expérience</h3>
-                    <p className="text-slate-400">+5 ans dans le domaine de l'informatique et du développement</p>
+                    <p className="text-slate-400">+5 ans dans le domaine de l&apos;informatique et du développement</p>
                   </div>
                 </div>
               </div>

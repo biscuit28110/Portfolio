@@ -29,7 +29,7 @@ export default function Contact() {
               <h3 className="text-2xl font-bold text-white mb-4">Me contacter</h3>
               <p className="text-slate-300 mb-6">
                 Vous avez un projet, une question ou simplement envie de discuter ? 
-                N'hésitez pas à me contacter via le formulaire ci-dessous ou par l'un de mes moyens de contact directs.
+                N&apos;hésitez pas à me contacter via le formulaire ci-dessous ou par l&apos;un de mes moyens de contact directs.
               </p>
               
               <div className="space-y-4">
@@ -97,7 +97,7 @@ export default function Contact() {
                   <label htmlFor="message" className="block text-slate-300 mb-2">Message</label>
                   <textarea
                     id="message"
-                    rows="5"
+                    rows={5}
                     className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     placeholder="Votre message..."
                     required

@@ -8,11 +8,18 @@ type TypewriterTextProps = {
 };
 
 export default function TypewriterText({ text, speed = 70 }: TypewriterTextProps) {
-  const [visibleLength, setVisibleLength] = useState(0);
+  const [visibleLength, setVisibleLength] = useState(() => {
+    if (typeof window === "undefined") {
+      return 0;
+    }
+
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? text.length
+      : 0;
+  });
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisibleLength(text.length);
       return;
     }
 

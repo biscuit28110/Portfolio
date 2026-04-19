@@ -47,8 +47,8 @@ export default function Skills() {
                     className={`bg-gradient-to-r from-cyan-400 to-blue-600 h-full w-[${skill.level}%] transition-all duration-700`}
                     role="progressbar"
                     aria-valuenow={skill.level}
-                    aria-valuemin="0"
-                    aria-valuemax="100"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
                   ></div>
                 </div>
               </div>
@@ -69,7 +69,7 @@ export default function Skills() {
             </div>
             
             <div className="bg-slate-800/30 rounded-xl p-6">
-              <h3 className="font-semibold text-white mb-4">Domaines d'expertise</h3>
+              <h3 className="font-semibold text-white mb-4">Domaines d&apos;expertise</h3>
               <ul className="space-y-2 text-slate-300">
                 <li>Développement web full-stack</li>
                 <li>Optimisation des performances</li>
