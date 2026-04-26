@@ -41,11 +41,11 @@ export default function TypewriterText({ text, speed = 70 }: TypewriterTextProps
   }, [speed, text]);
 
   return (
-    <span className="relative inline-block whitespace-nowrap" aria-label={text}>
+    <span className="relative inline-block max-w-full whitespace-pre-wrap break-words sm:whitespace-nowrap" aria-label={text}>
       <span className="invisible" aria-hidden="true">
         {text}
       </span>
-      <span className="absolute left-0 top-0" aria-hidden="true">
+      <span className="absolute left-0 top-0 max-w-full whitespace-pre-wrap break-words sm:whitespace-nowrap" aria-hidden="true">
         {text.slice(0, visibleLength)}
       </span>
     </span>

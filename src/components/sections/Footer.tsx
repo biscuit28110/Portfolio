@@ -3,7 +3,7 @@
 export default function Footer() {
   return (
     <footer className="bg-slate-900/50 border-t border-slate-800/50">
-      <div className="max-w-4xl mx-auto py-12 px-6">
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
         <div className="flex flex-col items-center gap-8">
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center gap-3">
@@ -12,7 +12,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="LinkedIn"
-                className="text-4xl font-black leading-none text-white transition hover:text-cyan-300"
+                className="inline-flex min-h-11 items-center text-4xl font-black leading-none text-white transition hover:text-cyan-300"
               >
                 in
               </a>
@@ -38,7 +38,7 @@ export default function Footer() {
             </p>
           </div>
           
-          <div className="flex gap-4 text-slate-500 text-sm">
+          <div className="flex flex-wrap justify-center gap-4 text-center text-sm text-slate-500">
             <span>Accessibilité</span>
             <span>Confidentialité</span>
             <span>Conditions d&apos;utilisation</span>

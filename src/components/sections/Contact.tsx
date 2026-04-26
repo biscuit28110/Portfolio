@@ -12,22 +12,22 @@ export default function Contact() {
     <section
       id="contact"
       ref={ref}
-      className={`min-h-[calc(100vh-4rem)] py-20 px-6 md:px-12 ${inView ? "active-section" : ""}`}
+      className={`min-h-[calc(100vh-4rem)] px-4 py-16 sm:px-6 md:px-12 md:py-20 ${inView ? "active-section" : ""}`}
       aria-label="Section Contact"
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="mx-auto max-w-4xl">
         <div className="space-y-12">
           <div className="text-center">
-            <h2 className="text-4xl font-bold text-white mb-4">
+            <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
               Contactez-moi
             </h2>
-            <div className="w-24 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto rounded-full"></div>
+            <div className="mx-auto h-0.5 w-24 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600" />
           </div>
           
           <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-white mb-4">Me contacter</h3>
-              <p className="text-slate-300 mb-6">
+              <h3 className="mb-4 text-2xl font-bold text-white">Me contacter</h3>
+              <p className="mb-6 text-slate-300">
                 Vous avez un projet, une question ou simplement envie de discuter ? 
                 N&apos;hésitez pas à me contacter via le formulaire ci-dessous ou par l&apos;un de mes moyens de contact directs.
               </p>
@@ -71,41 +71,41 @@ export default function Contact() {
               </div>
             </div>
             
-            <div className="bg-slate-800/30 rounded-xl p-6">
+            <div className="rounded-xl bg-slate-800/30 p-5 sm:p-6">
               <form className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-slate-300 mb-2">Nom</label>
+                  <label htmlFor="name" className="mb-2 block text-slate-300">Nom</label>
                   <input
                     type="text"
                     id="name"
-                    className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="min-h-11 w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     placeholder="Votre nom"
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-slate-300 mb-2">Email</label>
+                  <label htmlFor="email" className="mb-2 block text-slate-300">Email</label>
                   <input
                     type="email"
                     id="email"
-                    className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="min-h-11 w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     placeholder="votre@email.com"
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-slate-300 mb-2">Message</label>
+                  <label htmlFor="message" className="mb-2 block text-slate-300">Message</label>
                   <textarea
                     id="message"
                     rows={5}
-                    className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     placeholder="Votre message..."
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium py-3 px-6 rounded-xl hover:opacity-90 transition-opacity"
+                  className="min-h-11 w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 font-medium text-white transition-opacity hover:opacity-90"
                 >
                   Envoyer le message
                 </button>
