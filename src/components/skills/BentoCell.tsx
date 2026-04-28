@@ -99,7 +99,7 @@ export function BentoCell({ category, index, className = "" }: BentoCellProps) {
       transition={{
         delay: index * 0.09,
         duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       }}
       whileHover={{ y: -4, transition: { duration: 0.22, ease: "easeOut" } }}
       className={`group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-slate-950/80 backdrop-blur-2xl ${className}`}
