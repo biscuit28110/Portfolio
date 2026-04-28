@@ -43,9 +43,19 @@ Rules:
 All UI MUST follow:
 https://21st.dev/community/components
 
+### Magic MCP (PRIORITÉ ABSOLUE)
+
+Le Magic MCP de 21st.dev est installé et configuré.
+À chaque génération de composant UI, tu DOIS :
+
+1. Utiliser l'outil `21st_magic_component_builder` du MCP pour rechercher et récupérer un composant existant
+2. Si aucun composant ne correspond exactement, utiliser `21st_magic_component_inspiration` pour t'en inspirer
+3. Adapter le composant récupéré au design system du projet (palette slate-950/cyan/violet, TypeScript, Framer Motion)
+
 STRICT RULES:
-- NEVER create basic Tailwind UI
-- ALWAYS replicate or adapt high-quality components from 21st.dev
+- NEVER create basic Tailwind UI from scratch
+- ALWAYS use Magic MCP first before writing any UI component
+- ALWAYS adapt the retrieved component to match the existing design system
 - focus on premium UI (animations, gradients, spacing, hierarchy)
 
 ---
