@@ -3,8 +3,40 @@
   themes: light --default, dark --prefersdark;
 }
 
+/* ============================================================
+   DESIGN TOKENS — charte graphique du portfolio
+   ============================================================ */
 :root {
   color-scheme: dark;
+
+  /* --- Backgrounds --- */
+  --bg-base:     #020617;   /* slate-950 */
+  --bg-surface:  #0f172a;   /* slate-900 */
+  --bg-elevated: #1e293b;   /* slate-800 */
+
+  /* --- Borders --- */
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+
+  /* --- Accents --- */
+  --accent-cyan:    #22d3ee; /* cyan-400   — liens, highlights */
+  --accent-blue:    #2563eb; /* blue-600   — boutons, nav active */
+  --accent-violet:  #8b5cf6; /* violet-500 — skills */
+  --accent-emerald: #34d399; /* emerald-400 — disponible */
+
+  /* --- Typographie --- */
+  --text-primary:   #ffffff;
+  --text-secondary: #cbd5e1; /* slate-300 */
+  --text-muted:     #94a3b8; /* slate-400 */
+  --text-subtle:    #64748b; /* slate-500 */
+  --text-faint:     #475569; /* slate-600 */
+
+  /* --- Easing --- */
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* --- Spacing --- */
+  --section-py: clamp(5rem, 8vw, 7rem);
+  --section-px: clamp(1rem, 5vw, 4rem);
 }
 
 /* Custom styles for active section highlighting */
