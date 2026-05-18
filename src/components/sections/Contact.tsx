@@ -1,111 +1,125 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { SectionWrapper } from "@/components/ui/SectionWrapper";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { fadeUp } from "@/lib/motion";
+
+const contactLinks = [
+  {
+    label: "Email",
+    value: "contact@traviss.dev",
+    href: "mailto:contact@traviss.dev",
+    icon: (
+      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="m2 7 10 7 10-7" />
+      </svg>
+    ),
+  },
+  {
+    label: "LinkedIn",
+    value: "traviss-talamaku",
+    href: "https://www.linkedin.com/in/traviss-talamaku-ba6405168",
+    icon: (
+      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Localisation",
+    value: "Paris, France",
+    href: null,
+    icon: (
+      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+        <circle cx="12" cy="9" r="2.5" />
+      </svg>
+    ),
+  },
+];
+
+const inputClass =
+  "w-full rounded-xl border border-white/8 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-all duration-200 focus:border-cyan-500/40 focus:bg-white/[0.06] focus:ring-1 focus:ring-cyan-500/20";
+
 export default function Contact() {
   return (
-    <section
-      id="contact"
-      className="min-h-[calc(100vh-4rem)] px-4 py-16 sm:px-6 md:px-12 md:py-20"
-      aria-label="Section Contact"
-    >
-      <div className="mx-auto max-w-4xl">
-        <div className="space-y-12">
-          <div className="text-center">
-            <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
-              Contactez-moi
-            </h2>
-            <div className="mx-auto h-0.5 w-24 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600" />
+    <SectionWrapper id="contact" ariaLabel="Section Contact" ambient="blue-cyan">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+
+          {/* ── Colonne gauche ── */}
+          <div className="space-y-10">
+            <SectionHeading
+              eyebrow="Contact"
+              title="Travaillons ensemble"
+              description="Disponible pour des missions en CDI ou freelance. N'hésitez pas à me contacter pour discuter de votre projet."
+            />
+
+            <motion.div {...fadeUp(0.06)} className="space-y-3">
+              {contactLinks.map(({ label, value, href, icon }) => {
+                const inner = (
+                  <div className="flex items-center gap-4 rounded-xl border border-white/8 bg-white/[0.03] px-4 py-4 transition-all duration-200 hover:border-white/15 hover:bg-white/[0.06]">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.05] text-slate-400">
+                      {icon}
+                    </span>
+                    <div>
+                      <p className="text-[11px] tracking-[0.18em] text-slate-500 uppercase">{label}</p>
+                      <p className="mt-0.5 text-sm font-medium text-slate-200">{value}</p>
+                    </div>
+                    {href && (
+                      <span className="ml-auto text-slate-600 transition-colors group-hover:text-slate-400">↗</span>
+                    )}
+                  </div>
+                );
+                return href ? (
+                  <a key={label} href={href} target="_blank" rel="noreferrer" className="group block">
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={label}>{inner}</div>
+                );
+              })}
+            </motion.div>
           </div>
-          
-          <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
-            <div className="space-y-6">
-              <h3 className="mb-4 text-2xl font-bold text-white">Me contacter</h3>
-              <p className="mb-6 text-slate-300">
-                Vous avez un projet, une question ou simplement envie de discuter ? 
-                N&apos;hésitez pas à me contacter via le formulaire ci-dessous ou par l&apos;un de mes moyens de contact directs.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 h-8 w-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                    <svg className="h-4 w-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 13.08z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">Email</h4>
-                    <p className="text-slate-300">contact@traviss.dev</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 h-8 w-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                    <svg className="h-4 w-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.56l2.38 4.7A1 1 0 009.37 8h3.26a1 1 0 01.94.56l2.38 4.7A1 1 0 0014.63 17h3.28a1 1 0 01.94.56l2.38 4.7a1 1 0 01-.94 1.54H21a2 2 0 012 2v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">Téléphone</h4>
-                    <p className="text-slate-300">+33 6 12 34 56 78</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 h-8 w-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                    <svg className="h-4 w-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 11.9 11.9 0 01-8.4 4.2 8 8 0 01-5.8-2.4 8.4 8.4 0 01-.5-2.1 8.5 8.5 0 01-1 1.8 8.4 8.4 0 01-.3-.5A12.07 12.07 0 013 11.5a12 12 0 016.6 2 9 9 0 011.8-.6 12.08 12.08 0 016 0c1.02.06 2.04.12 3.04.18 1 1.04 1.17 2.49.94 3.81-.24 1.32-.56 2.66-.94 3.81A12.08 12.08 0 0121 11.5z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">Localisation</h4>
-                    <p className="text-slate-300">Paris, France</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="rounded-xl bg-slate-800/30 p-5 sm:p-6">
+
+          {/* ── Colonne droite : formulaire ── */}
+          <motion.div {...fadeUp(0.08)}>
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-6 sm:p-8">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent" />
               <form className="space-y-5">
-                <div>
-                  <label htmlFor="name" className="mb-2 block text-slate-300">Nom</label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="min-h-11 w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    placeholder="Votre nom"
-                    required
-                  />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-xs font-medium tracking-[0.12em] text-slate-400 uppercase">Nom</label>
+                    <input type="text" id="name" className={inputClass} placeholder="Votre nom" required />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-xs font-medium tracking-[0.12em] text-slate-400 uppercase">Email</label>
+                    <input type="email" id="email" className={inputClass} placeholder="votre@email.com" required />
+                  </div>
                 </div>
-                <div>
-                  <label htmlFor="email" className="mb-2 block text-slate-300">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="min-h-11 w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    placeholder="votre@email.com"
-                    required
-                  />
+                <div className="space-y-2">
+                  <label htmlFor="subject" className="text-xs font-medium tracking-[0.12em] text-slate-400 uppercase">Sujet</label>
+                  <input type="text" id="subject" className={inputClass} placeholder="Objet de votre message" />
                 </div>
-                <div>
-                  <label htmlFor="message" className="mb-2 block text-slate-300">Message</label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    className="w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    placeholder="Votre message..."
-                    required
-                  />
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-xs font-medium tracking-[0.12em] text-slate-400 uppercase">Message</label>
+                  <textarea id="message" rows={5} className={inputClass} placeholder="Décrivez votre projet ou votre demande..." required />
                 </div>
                 <button
                   type="submit"
-                  className="min-h-11 w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 font-medium text-white transition-opacity hover:opacity-90"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-cyan-500/25 bg-cyan-500/10 px-6 py-3.5 text-sm font-medium text-cyan-100 transition-all duration-300 hover:border-cyan-400/40 hover:bg-cyan-500/15"
                 >
                   Envoyer le message
+                  <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
                 </button>
               </form>
             </div>
-          </div>
+          </motion.div>
+
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 }
