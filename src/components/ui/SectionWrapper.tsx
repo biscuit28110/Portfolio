@@ -45,7 +45,7 @@ export function SectionWrapper({
     <section
       id={id}
       aria-label={ariaLabel}
-      className={`relative isolate overflow-hidden px-4 py-[var(--section-py)] sm:px-6 md:px-10 lg:px-16 ${className}`}
+      className={`relative isolate overflow-hidden px-4 py-20 sm:px-6 md:px-10 md:py-28 lg:px-16 ${className}`}
     >
       {divider && (
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/8 to-transparent" />

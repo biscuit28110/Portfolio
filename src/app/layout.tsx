@@ -6,8 +6,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr"  data-theme="dark">
-      <body>
+    <html lang="fr" className="scroll-smooth">
+      <body className="overflow-x-hidden">
         {children}
       </body>
     </html>

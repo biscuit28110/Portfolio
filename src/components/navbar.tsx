@@ -148,7 +148,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-base-100">
+    <nav>
       {/* Avatar circulaire desktop — visible uniquement sur la section hero */}
       <div className={`fixed top-5 right-6 z-40 hidden md:block transition-all duration-500 ${activeSection === "hero" ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
         <div className="relative h-24 w-24 overflow-hidden rounded-full ring-2 ring-white/25 ring-offset-2 ring-offset-slate-950 shadow-[0_0_28px_rgba(99,179,237,0.3)]">

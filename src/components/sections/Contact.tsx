@@ -1,18 +1,10 @@
 "use client";
 
-import { useInView } from "react-intersection-observer";
-
 export default function Contact() {
-  const { ref, inView } = useInView({
-    triggerOnce: false,
-    threshold: 0.3,
-  });
-
   return (
     <section
       id="contact"
-      ref={ref}
-      className={`min-h-[calc(100vh-4rem)] px-4 py-16 sm:px-6 md:px-12 md:py-20 ${inView ? "active-section" : ""}`}
+      className="min-h-[calc(100vh-4rem)] px-4 py-16 sm:px-6 md:px-12 md:py-20"
       aria-label="Section Contact"
     >
       <div className="mx-auto max-w-4xl">

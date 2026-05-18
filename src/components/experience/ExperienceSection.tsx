@@ -14,7 +14,6 @@ export function ExperienceSection() {
       className="relative isolate overflow-hidden px-4 py-20 sm:px-6 md:px-10 md:py-24 lg:px-16"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.1),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.08),transparent_30%),linear-gradient(180deg,rgba(2,6,23,0.96),rgba(2,6,23,1))]" />
-      <div className="skills-noise-overlay pointer-events-none absolute inset-0 opacity-25" />
       <div className="pointer-events-none absolute left-[8%] top-24 h-80 w-80 rounded-full bg-violet-500/10 blur-[140px]" />
       <div className="pointer-events-none absolute right-[8%] bottom-20 h-80 w-80 rounded-full bg-cyan-500/10 blur-[140px]" />
 

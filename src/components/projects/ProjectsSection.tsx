@@ -18,7 +18,6 @@ export function ProjectsSection() {
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/30 to-transparent" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.08),transparent_26%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.1),transparent_28%),linear-gradient(180deg,rgba(2,6,23,0.92),rgba(2,6,23,0.98))]" />
-      <div className="skills-noise-overlay pointer-events-none absolute inset-0 opacity-30" />
       <div className="pointer-events-none absolute left-[8%] top-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-[120px]" />
       <div className="pointer-events-none absolute right-[10%] top-1/3 h-80 w-80 rounded-full bg-violet-500/10 blur-[140px]" />
 
