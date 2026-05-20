@@ -7,22 +7,214 @@
 
 :root {
   color-scheme: dark;
+  --maxw: 1280px;
+  --pad: clamp(20px, 4vw, 56px);
 }
 
-/* Scrollbar — pas d'équivalent Tailwind natif */
-::-webkit-scrollbar {
-  width: 8px;
+html {
+  scroll-behavior: smooth;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
+body {
+  font-feature-settings: "ss01", "ss02", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.005em;
+  overflow-x: hidden;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.5);
-  border-radius: 4px;
+::selection {
+  background: #22d3ee;
+  color: #020617;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.7);
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px }
+::-webkit-scrollbar-track { background: rgba(15,23,42,0.5) }
+::-webkit-scrollbar-thumb { background: rgba(34,211,238,0.3); border-radius: 3px }
+::-webkit-scrollbar-thumb:hover { background: rgba(34,211,238,0.5) }
+
+/* ─── Keyframes ─── */
+
+@keyframes pulse-dot {
+  50% { box-shadow: 0 0 0 6px rgba(52,211,153,0) }
+}
+
+@keyframes pulse-dot-cyan {
+  50% { box-shadow: 0 0 0 6px rgba(34,211,238,0) }
+}
+
+@keyframes blink {
+  50% { opacity: 0 }
+}
+
+@keyframes bounce-mouse {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.45 }
+  50% { transform: translateX(-50%) translateY(8px); opacity: 0.75 }
+}
+
+@keyframes marquee-rtl {
+  from { transform: translate3d(0, 0, 0) }
+  to   { transform: translate3d(-50%, 0, 0) }
+}
+
+@keyframes marquee-ltr {
+  from { transform: translate3d(-50%, 0, 0) }
+  to   { transform: translate3d(0, 0, 0) }
+}
+
+@keyframes grid-scroll-down {
+  from { background-position: 0 0 }
+  to   { background-position: 0 60px }
+}
+
+@keyframes grid-scroll-up {
+  from { background-position: 0 60px }
+  to   { background-position: 0 0 }
+}
+
+@keyframes drop-line {
+  0%    { transform: scaleY(0); transform-origin: top }
+  50%   { transform: scaleY(1); transform-origin: top }
+  50.01%{ transform-origin: bottom }
+  100%  { transform: scaleY(0); transform-origin: bottom }
+}
+
+@keyframes career-dot-pulse {
+  50% { box-shadow: 0 0 0 3px #020617, 0 0 0 8px rgba(52,211,153,0) }
+}
+
+/* ─── Responsive layout fixes ─── */
+
+/* Avatar */
+.avatar-ring {
+  width: 88px;
+  height: 88px;
+}
+
+@media (max-width: 860px) {
+  .avatar-ring {
+    width: 48px;
+    height: 48px;
+  }
+  .avatar-link {
+    right: 64px !important;
+  }
+}
+
+/* Hero content padding on mobile (no space for sidebar) */
+@media (max-width: 860px) {
+  .hero-content {
+    padding-left: clamp(20px, 4vw, 56px) !important;
+  }
+}
+
+/* Career map : 1 colonne sur mobile */
+@media (max-width: 960px) {
+  .career-map {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .career-nav-wrap {
+    display: none !important;
+  }
+  /* CareerCard : retire le minHeight desktop sur mobile */
+  .career-card {
+    min-height: auto !important;
+    padding: clamp(32px, 4vw, 48px) 0 !important;
+  }
+}
+
+/* Education grid : 2 cols tablette, 1 col mobile */
+@media (max-width: 860px) {
+  .edu-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 560px) {
+  .edu-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Skills stats : 2x2 sur mobile */
+@media (max-width: 860px) {
+  .skills-stats {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* Marquee label : réduit la largeur de l'overlay sur mobile */
+@media (max-width: 760px) {
+  .marquee-label {
+    min-width: 110px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* Marquee track : compense le label overlay — 240px desktop, 130px mobile */
+.marquee-track {
+  padding-left: 240px;
+}
+@media (max-width: 760px) {
+  .marquee-track {
+    padding-left: 130px !important;
+  }
+}
+
+/* Project scenes : 1 colonne + retire le sticky sur mobile */
+@media (max-width: 960px) {
+  .proj-scene {
+    position: relative !important;
+    min-height: auto !important;
+    padding: clamp(48px, 6vw, 80px) 0 !important;
+    /* Évite que le z-index crée un contexte de stacking par-dessus le heading */
+    z-index: auto !important;
+    isolation: auto !important;
+  }
+  .proj-scene__grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .proj-browser-wrap .browser-frame {
+    transform: none !important;
+  }
+}
+
+/* Contact form — grille responsive */
+.cf-form-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 960px) {
+  .cf-submit-wrap {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .cf-form-grid {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .cf-submit-wrap button {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+}
+
+/* ─── Utilities non couvertes par Tailwind ─── */
+
+.font-mono-custom {
+  font-family: var(--font-geist-mono, ui-monospace);
+}
+
+/* prefers-reduced-motion : désactive toutes les animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

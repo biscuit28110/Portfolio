@@ -1,7 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "mcp__magic__21st_magic_component_inspiration",
+      "Bash(ffprobe -v quiet -print_format json -show_streams /workspaces/Portfolio/public/assets/videos/fond.mp4)",
+      "Bash(ffprobe /workspaces/Portfolio/public/assets/videos/fond.mp4)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/skills-preview)",
+      "Bash(npx tsc *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(git checkout *)",
+      "Bash(npm uninstall *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(git add *)"
     ]
   },
   "enableAllProjectMcpServers": true

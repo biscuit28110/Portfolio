@@ -1,41 +1,68 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/motion";
+import { motion } from 'framer-motion';
+import { fadeUp } from '@/lib/motion';
+import { GradientText } from '@/components/ui/GradientText';
+import { ReactNode } from 'react';
 
 type SectionHeadingProps = {
-  eyebrow?: string;
-  title: string;
-  description?: string;
-  align?: "left" | "center";
+  mono: string;
+  title: ReactNode;
+  align?: 'left' | 'center';
+  accent?: string;
 };
 
 export function SectionHeading({
-  eyebrow,
+  mono,
   title,
-  description,
-  align = "left",
+  align = 'left',
+  accent = '#22d3ee',
 }: SectionHeadingProps) {
-  const isCenter = align === "center";
+  const isCenter = align === 'center';
 
   return (
     <motion.div
       {...fadeUp(0)}
-      className={`max-w-2xl space-y-4 ${isCenter ? "mx-auto text-center" : ""}`}
+      className={isCenter ? 'mx-auto text-center' : ''}
+      style={{ marginBottom: 72 }}
     >
-      {eyebrow && (
-        <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[10px] font-semibold tracking-[0.28em] text-slate-400 uppercase backdrop-blur-sm">
-          {eyebrow}
+      {/* Mono label */}
+      <div
+        className="flex items-center gap-2.5 mb-5"
+        style={{ justifyContent: isCenter ? 'center' : 'flex-start' }}
+      >
+        {!isCenter && (
+          <span style={{ width: 24, height: 1, background: accent, display: 'block', flexShrink: 0 }} />
+        )}
+        <span
+          style={{
+            fontFamily: 'var(--font-geist-mono, ui-monospace)',
+            fontSize: 11,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: '#64748b',
+            fontWeight: 500,
+          }}
+        >
+          {mono}
         </span>
-      )}
-      <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl md:text-5xl">
+      </div>
+
+      {/* H2 */}
+      <h2
+        style={{
+          fontWeight: 600,
+          fontSize: 'clamp(32px, 4vw, 52px)',
+          lineHeight: 1.02,
+          letterSpacing: '-0.035em',
+          color: '#fff',
+          maxWidth: isCenter ? undefined : '16ch',
+        }}
+      >
         {title}
       </h2>
-      {description && (
-        <p className={`text-base leading-7 text-slate-400 md:text-lg ${isCenter ? "mx-auto" : ""}`}>
-          {description}
-        </p>
-      )}
     </motion.div>
   );
 }
+
+export { GradientText };
