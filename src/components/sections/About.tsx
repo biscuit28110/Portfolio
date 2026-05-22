@@ -1,211 +1,214 @@
-"use client";
+'use client';
 
-import {
-  motion,
-  useInView,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useMotionTemplate,
-} from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { motion } from 'framer-motion';
+import { fadeUp } from '@/lib/motion';
+import { BlobBg } from '@/components/ui/BlobBg';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { GradientText } from '@/components/ui/GradientText';
+import { useEffect, useRef, useState } from 'react';
 
-// --- Compteur animé ---
-function useCounter(target: number, inView: boolean, duration = 1.4) {
+function useCounter(target: number, suffix: string, trigger: boolean) {
   const [count, setCount] = useState(0);
-
   useEffect(() => {
-    if (!inView) {
-      const t = setTimeout(() => setCount(0), 0);
-      return () => clearTimeout(t);
-    }
-    const steps = 48;
-    const stepMs = (duration * 1000) / steps;
+    if (!trigger) return;
+    const duration = 1200;
+    const step = Math.max(Math.ceil(duration / (target * 16)), 1);
     let current = 0;
-
     const timer = setInterval(() => {
-      current += 1;
-      setCount(Math.round((target * current) / steps));
-      if (current >= steps) clearInterval(timer);
-    }, stepMs);
-
+      current = Math.min(current + 1, target);
+      setCount(current);
+      if (current >= target) clearInterval(timer);
+    }, step);
     return () => clearInterval(timer);
-  }, [inView, target, duration]);
-
-  return count;
+  }, [target, trigger]);
+  return `${count}${suffix}`;
 }
 
-function AnimatedStat({ raw, suffix, label }: { raw: number; suffix: string; label: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: false, amount: 0.6 });
-  const count = useCounter(raw, inView);
-
-  return (
-    <div ref={ref} className="flex flex-col items-center gap-1.5">
-      <span className="text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl">
-        {count}
-        <span className="text-cyan-400">{suffix}</span>
-      </span>
-      <span className="text-[11px] tracking-[0.12em] text-slate-500 uppercase">{label}</span>
-    </div>
-  );
+function AnimatedCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [triggered, setTriggered] = useState(false);
+  const display = useCounter(value, suffix, triggered);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setTriggered(true); }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return <span ref={ref}>{display}</span>;
 }
 
-// --- Bouton 3D avec tilt + glare ---
-function CvButton() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [10, -10]), {
-    stiffness: 260,
-    damping: 24,
-  });
-  const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-10, 10]), {
-    stiffness: 260,
-    damping: 24,
-  });
-
-  const glareX = useTransform(rawX, [-0.5, 0.5], [0, 100]);
-  const glareY = useTransform(rawY, [-0.5, 0.5], [0, 100]);
-  const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.13) 0%, transparent 55%)`;
-
-  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!ref.current) return;
-    const { left, top, width, height } = ref.current.getBoundingClientRect();
-    rawX.set((e.clientX - left) / width - 0.5);
-    rawY.set((e.clientY - top) / height - 0.5);
-  }
-
-  function onMouseLeave() {
-    rawX.set(0);
-    rawY.set(0);
-  }
-
-  return (
-    <div
-      ref={ref}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      className="flex justify-center"
-      style={{ perspective: "900px" }}
-    >
-      <motion.a
-        href="/assets/cv/tt-cv.pdf"
-        download
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="group relative inline-flex cursor-pointer items-center gap-4 overflow-hidden rounded-2xl px-7 py-4 text-sm font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_0_1px_rgba(255,255,255,0.08),0_4px_24px_rgba(0,0,0,0.3)] transition-shadow duration-300 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.13),0_0_0_1px_rgba(34,211,238,0.35),0_8px_40px_rgba(34,211,238,0.1)]"
-      >
-        {/* Fond de base */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-white/[0.03]" />
-        {/* Fond hover slide */}
-        <div className="absolute inset-0 -translate-y-full bg-gradient-to-b from-cyan-500/12 to-violet-500/8 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0" />
-        {/* Glare 3D */}
-        <motion.div style={{ background: glare }} className="pointer-events-none absolute inset-0 rounded-2xl" />
-
-        {/* Icône */}
-        <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/8 transition-all duration-300 group-hover:border-cyan-400/30 group-hover:bg-cyan-400/15">
-          <svg
-            className="h-3.5 w-3.5 text-slate-300 transition-all duration-300 group-hover:translate-y-0.5 group-hover:text-cyan-300"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-          </svg>
-        </span>
-
-        {/* Texte */}
-        <span className="relative flex flex-col">
-          <span className="text-sm font-medium leading-none text-white">Télécharger mon CV</span>
-          <span className="mt-1 text-[11px] leading-none text-slate-500 transition-colors duration-300 group-hover:text-cyan-500/70">
-            PDF · Mis à jour 2025
-          </span>
-        </span>
-
-        {/* Flèche */}
-        <span className="relative ml-2 text-slate-600 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-cyan-400">
-          →
-        </span>
-      </motion.a>
-    </div>
-  );
-}
-
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 16 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: false, amount: 0.3 },
-  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const, delay },
-});
+const INFO = [
+  { dt: 'Basé à',        dd: 'Paris · France' },
+  { dt: 'Statut',        dd: 'CDI · Freelance' },
+  { dt: 'Langues',       dd: 'Français · Anglais' },
+  { dt: 'Disponibilité', dd: 'Immédiate' },
+];
 
 export default function About() {
   return (
     <section
       id="about"
-      aria-label="Section À propos"
-      className="relative isolate overflow-hidden px-4 pb-24 pt-10 sm:px-6 md:px-10 md:pb-32 md:pt-12 lg:px-16"
+      style={{ padding: 'clamp(100px, 10vw, 140px) 0', position: 'relative', overflow: 'hidden' }}
     >
-      {/* Fond ambiant */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(34,211,238,0.07),transparent_45%),radial-gradient(ellipse_at_bottom_right,rgba(168,85,247,0.07),transparent_45%),linear-gradient(180deg,rgba(2,6,23,0.98),rgba(2,6,23,0.95))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <BlobBg blobs={[
+        { color: 'cyan',   size: 600, top: '-100px',    left: '-200px',  opacity: 0.07 },
+        { color: 'violet', size: 500, bottom: '-200px', right: '-150px', opacity: 0.06 },
+      ]} />
 
-      <div className="relative mx-auto max-w-3xl space-y-12">
+      {/* Container principal — 2 colonnes sur xl, centré sur mobile/tablette */}
+      <div
+        className="about-outer"
+        style={{
+          maxWidth: 'var(--maxw, 1280px)',
+          margin: '0 auto',
+          padding: '0 clamp(20px, 4vw, 56px)',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <div className="about-layout">
+          {/* Colonne gauche — heading + bio */}
+          <div className="about-col-left">
+            <SectionHeading
+              mono="01 — À propos"
+              title={<>Développer, <GradientText>former</GradientText>,<br />diagnostiquer.</>}
+              align="center"
+            />
 
-        {/* Titre de section */}
-        <motion.div {...fade(0)} className="text-center">
-          <h2 className="text-3xl font-semibold tracking-[-0.03em] text-white sm:text-4xl md:text-5xl">
-            À Propos
-          </h2>
-        </motion.div>
-
-        {/* En-tête rôle + dispo */}
-        <motion.div {...fade(0.08)} className="space-y-3">
-          <div className="flex items-center gap-2.5">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-            <span className="text-xs font-medium tracking-[0.2em] text-emerald-300 uppercase">Disponible</span>
-            <span className="text-slate-700">·</span>
-            <span className="text-xs tracking-[0.15em] text-slate-500 uppercase">CDI · Freelance</span>
+            <motion.div {...fadeUp(0.1)}>
+              {/* Bio */}
+              <div style={{ maxWidth: '58ch', margin: '0 auto' }}>
+                <p style={{ fontSize: 'clamp(15px, 1.1vw, 17px)', lineHeight: 1.65, color: '#cbd5e1', marginBottom: '1.2em' }}>
+                  Actuellement{' '}
+                  <strong style={{ color: '#fff', fontWeight: 500 }}>
+                    Formateur logiciel & Hotliner chez Turboself
+                  </strong>,
+                  j&apos;ai construit mon parcours entre{' '}
+                  <GradientText>développement web et support informatique terrain</GradientText>.
+                  Cette combinaison m&apos;a appris à autant construire des solutions qu&apos;à les expliquer et les maintenir.
+                </p>
+                <p style={{ fontSize: 'clamp(15px, 1.1vw, 17px)', lineHeight: 1.65, color: '#cbd5e1' }}>
+                  Pédagogie, rigueur technique et sens du diagnostic — trois réflexes que j&apos;applique aussi bien en formation qu&apos;en développement.
+                </p>
+              </div>
+            </motion.div>
           </div>
-          <p className="text-lg font-medium tracking-tight text-slate-300 sm:text-xl">
-            Formateur Logiciel <span className="text-slate-600">&amp;</span> Développeur Web
-          </p>
-        </motion.div>
 
-        {/* Bio */}
-        <motion.div {...fade(0.14)} className="space-y-4 border-l border-white/8 pl-5">
-          <p className="text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
-            Actuellement Formateur et Hotliner logiciel, j&apos;ai construit mon parcours entre
-            développement web et support informatique terrain. Cette combinaison m&apos;a appris
-            à autant construire des solutions qu&apos;à les expliquer et les maintenir.
-          </p>
-          <p className="text-sm leading-7 text-slate-400 sm:text-base sm:leading-8">
-            Pédagogie, rigueur technique et sens du diagnostic — trois réflexes que j&apos;applique
-            aussi bien en formation qu&apos;en développement.
-          </p>
-        </motion.div>
+          {/* Colonne droite — infos + CV + stats */}
+          <motion.div {...fadeUp(0.2)} className="about-col-right">
+            {/* Info list */}
+            <dl
+              className="about-info-grid"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '20px 28px',
+                paddingTop: 28,
+                borderTop: '1px solid rgba(255,255,255,0.08)',
+                textAlign: 'left',
+              }}
+            >
+              {INFO.map(({ dt, dd }) => (
+                <div key={dt}>
+                  <dt style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#64748b', marginBottom: 6 }}>
+                    {dt}
+                  </dt>
+                  <dd style={{ fontSize: 15, color: '#fff', margin: 0 }}>{dd}</dd>
+                </div>
+              ))}
+            </dl>
 
-        {/* Stats animées */}
-        <motion.div
-          {...fade(0.2)}
-          className="flex items-center justify-center gap-10 border-y border-white/6 py-8 sm:gap-16"
-        >
-          <AnimatedStat raw={3} suffix="+" label="Ans d'expérience" />
-          <div className="h-10 w-px shrink-0 bg-white/8" />
-          <AnimatedStat raw={5} suffix="+" label="Projets en prod" />
-          <div className="h-10 w-px shrink-0 bg-white/8" />
-          <AnimatedStat raw={1} suffix="" label="Poste actuel" />
-        </motion.div>
+            {/* CV button */}
+            <a
+              href="/assets/cv/tt-cv.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                marginTop: 28,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '14px 22px',
+                border: '1px solid rgba(255,255,255,0.10)',
+                borderRadius: 14,
+                fontSize: 14,
+                color: '#fff',
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))',
+                textDecoration: 'none',
+                transition: 'border-color 250ms ease, box-shadow 250ms ease',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = 'rgba(34,211,238,0.35)';
+                el.style.boxShadow = '0 12px 40px -8px rgba(34,211,238,0.2)';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = 'rgba(255,255,255,0.10)';
+                el.style.boxShadow = 'none';
+              }}
+            >
+              <span
+                style={{
+                  display: 'flex',
+                  width: 34,
+                  height: 34,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 10,
+                  background: 'rgba(34,211,238,0.10)',
+                  border: '1px solid rgba(34,211,238,0.20)',
+                  color: '#22d3ee',
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </span>
+              <span>
+                Télécharger le CV — PDF
+                <small style={{ color: '#64748b', fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 11, display: 'block' }}>
+                  Mis à jour 2025
+                </small>
+              </span>
+            </a>
 
-        {/* Bouton CV 3D */}
-        <motion.div {...fade(0.28)}>
-          <CvButton />
-        </motion.div>
-
+            {/* Stats */}
+            <div
+              className="about-stats"
+              style={{
+                marginTop: 36,
+                display: 'flex',
+                justifyContent: 'center',
+                gap: 48,
+                flexWrap: 'wrap',
+                paddingTop: 28,
+                borderTop: '1px solid rgba(255,255,255,0.06)',
+              }}
+            >
+              {[
+                { value: 3, suffix: '+', label: "Années d'exp." },
+                { value: 5, suffix: '+', label: 'Projets livrés' },
+                { value: 1, suffix: '',  label: 'Poste actuel' },
+              ].map(({ value, suffix, label }) => (
+                <div key={label} style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: 'clamp(28px, 3vw, 44px)', fontWeight: 700, lineHeight: 1, color: '#fff', letterSpacing: '-0.03em' }}>
+                    <GradientText>
+                      <AnimatedCounter value={value} suffix={suffix} />
+                    </GradientText>
+                  </div>
+                  <div style={{ marginTop: 6, fontSize: 12, color: '#64748b', fontFamily: 'var(--font-geist-mono, ui-monospace)', letterSpacing: '0.04em' }}>
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
