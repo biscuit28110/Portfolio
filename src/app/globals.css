@@ -255,6 +255,62 @@ body {
   }
 }
 
+/* About — layout 2 colonnes sur grands écrans */
+.about-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.about-col-left {
+  width: 100%;
+  max-width: 780px;
+  text-align: center;
+}
+
+.about-col-right {
+  width: 100%;
+  max-width: 640px;
+}
+
+@media (min-width: 1280px) {
+  .about-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 80px;
+  }
+  .about-col-left {
+    flex: 1;
+    max-width: none;
+  }
+  .about-col-right {
+    flex: 0 0 420px;
+    padding-top: 20px;
+  }
+  .about-stats {
+    justify-content: flex-start !important;
+  }
+}
+
+/* About — stats gap responsive */
+.about-stats {
+  gap: 48px;
+}
+@media (max-width: 640px) {
+  .about-stats {
+    gap: 28px !important;
+  }
+}
+
+/* About — info grid 1 col sur très petits écrans */
+@media (max-width: 420px) {
+  .about-info-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
 /* ─── Utilities non couvertes par Tailwind ─── */
 
 .font-mono-custom {

@@ -137,11 +137,11 @@ export function SideNav() {
               <div
                 style={{
                   position: 'absolute',
-                  left: 60,
+                  left: 58,
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  padding: '7px 12px',
-                  background: 'rgba(2,6,23,0.92)',
+                  padding: '6px 11px',
+                  background: 'rgba(2,6,23,0.95)',
                   border: '1px solid rgba(255,255,255,0.10)',
                   borderRadius: 8,
                   fontFamily: 'var(--font-geist-mono, ui-monospace)',
@@ -150,9 +150,12 @@ export function SideNav() {
                   textTransform: 'uppercase',
                   color: '#cbd5e1',
                   whiteSpace: 'nowrap',
-                  backdropFilter: 'blur(10px)',
+                  maxWidth: 'calc(100vw - 100px)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
                   pointerEvents: 'none',
                   zIndex: 70,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
                 }}
               >
                 {label}

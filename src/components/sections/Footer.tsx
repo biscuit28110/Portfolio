@@ -42,7 +42,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={label}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-slate-400 transition-all duration-200 hover:border-white/15 hover:bg-white/[0.08] hover:text-white"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-slate-400 transition-all duration-200 hover:border-white/15 hover:bg-white/[0.08] hover:text-white"
               >
                 {icon}
               </a>
