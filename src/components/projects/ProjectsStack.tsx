@@ -54,7 +54,7 @@ export function ProjectsStack() {
         style={{ position: 'relative', background: '#020617' }}
       >
         {projects.map((project, i) => (
-          <ProjectScene key={project.slug} project={project} index={i + 1} />
+          <ProjectScene key={project.slug} project={project} index={i + 1} total={projects.length} />
         ))}
       </div>
     </>

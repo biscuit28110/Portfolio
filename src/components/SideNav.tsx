@@ -117,14 +117,14 @@ export function SideNav() {
                 width: 48,
                 height: 48,
                 borderRadius: '50%',
-                border: isActive ? 'none' : '1px solid rgba(255,255,255,0.10)',
                 background: isActive
-                  ? '#3b82f6'
+                  ? 'rgba(34,211,238,0.15)'
                   : 'rgba(15,23,42,0.55)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                color: isActive ? '#fff' : 'rgba(255,255,255,0.55)',
-                boxShadow: isActive ? '0 0 24px rgba(59,130,246,0.45)' : 'none',
+                border: isActive ? '1px solid rgba(34,211,238,0.35)' : '1px solid rgba(255,255,255,0.10)',
+                color: isActive ? '#22d3ee' : 'rgba(255,255,255,0.55)',
+                boxShadow: isActive ? '0 0 20px rgba(34,211,238,0.25)' : 'none',
                 transition: 'all 250ms cubic-bezier(.22,1,.36,1)',
                 textDecoration: 'none',
               }}
@@ -137,11 +137,11 @@ export function SideNav() {
               <div
                 style={{
                   position: 'absolute',
-                  left: 60,
+                  left: 58,
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  padding: '7px 12px',
-                  background: 'rgba(2,6,23,0.92)',
+                  padding: '6px 11px',
+                  background: 'rgba(2,6,23,0.95)',
                   border: '1px solid rgba(255,255,255,0.10)',
                   borderRadius: 8,
                   fontFamily: 'var(--font-geist-mono, ui-monospace)',
@@ -150,9 +150,12 @@ export function SideNav() {
                   textTransform: 'uppercase',
                   color: '#cbd5e1',
                   whiteSpace: 'nowrap',
-                  backdropFilter: 'blur(10px)',
+                  maxWidth: 'calc(100vw - 100px)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
                   pointerEvents: 'none',
                   zIndex: 70,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
                 }}
               >
                 {label}

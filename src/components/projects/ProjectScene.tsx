@@ -7,9 +7,10 @@ import { BrowserFrame } from '@/components/ui/BrowserFrame';
 type ProjectSceneProps = {
   project: ProjectEntry;
   index: number;
+  total: number;
 };
 
-export function ProjectScene({ project, index }: ProjectSceneProps) {
+export function ProjectScene({ project, index, total }: ProjectSceneProps) {
   const { accent } = project;
   const sceneNum = String(index).padStart(2, '0');
   const urlDisplay = project.liveUrl.replace(/^https?:\/\//, '');
@@ -49,11 +50,12 @@ export function ProjectScene({ project, index }: ProjectSceneProps) {
       {/* Giant watermark number */}
       <div
         aria-hidden="true"
+        className="proj-watermark"
         style={{
           position: 'absolute',
           right: '-3vw',
           bottom: '-12vh',
-          fontSize: 'clamp(200px, 38vw, 520px)',
+          fontSize: 'clamp(120px, 30vw, 520px)',
           lineHeight: 0.8,
           fontWeight: 800,
           color: 'rgba(255,255,255,0.025)',
@@ -65,6 +67,34 @@ export function ProjectScene({ project, index }: ProjectSceneProps) {
         }}
       >
         {sceneNum}
+      </div>
+
+      {/* Compteur mobile — caché sur desktop */}
+      <div
+        className="proj-mobile-counter"
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          maxWidth: 'var(--maxw, 1280px)',
+          margin: '0 auto',
+          padding: '0 clamp(20px, 4vw, 56px)',
+          width: '100%',
+          marginBottom: 24,
+          display: 'none',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ display: 'block', width: 20, height: 1, background: accent.primary, flexShrink: 0 }} />
+          <span style={{
+            fontFamily: 'var(--font-geist-mono, ui-monospace)',
+            fontSize: 11,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase' as const,
+            color: '#64748b',
+          }}>
+            {String(index).padStart(2, '0')}&thinsp;/&thinsp;{String(total).padStart(2, '0')}
+          </span>
+        </div>
       </div>
 
       {/* Content grid */}
@@ -84,7 +114,7 @@ export function ProjectScene({ project, index }: ProjectSceneProps) {
         className="proj-scene__grid"
       >
         {/* Text column */}
-        <div>
+        <div className="proj-text-col">
           {/* Badge */}
           <div
             style={{
@@ -292,7 +322,7 @@ export function ProjectScene({ project, index }: ProjectSceneProps) {
 
         {/* Browser frame column */}
         <div
-          className="proj-browser-wrap"
+          className="proj-browser-wrap proj-image-col"
           onMouseEnter={(e) => {
             const frame = e.currentTarget.querySelector('.browser-frame') as HTMLElement | null;
             if (frame) {

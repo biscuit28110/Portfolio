@@ -9,6 +9,13 @@
   color-scheme: dark;
   --maxw: 1280px;
   --pad: clamp(20px, 4vw, 56px);
+  --hero-pad-left: 120px;
+}
+
+@media (max-width: 860px) {
+  :root {
+    --hero-pad-left: clamp(20px, 4vw, 56px);
+  }
 }
 
 html {
@@ -93,19 +100,29 @@ body {
 }
 
 @media (max-width: 860px) {
-  .avatar-ring {
-    width: 48px;
-    height: 48px;
-  }
   .avatar-link {
-    right: 64px !important;
+    display: none !important;
   }
 }
 
-/* Hero content padding on mobile (no space for sidebar) */
-@media (max-width: 860px) {
-  .hero-content {
-    padding-left: clamp(20px, 4vw, 56px) !important;
+
+/* Career mobile indicator — caché sur desktop, visible sur mobile */
+.career-mobile-indicator {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .career-mobile-indicator {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(2, 6, 23, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 14px clamp(20px, 4vw, 56px);
+    margin-bottom: 0;
   }
 }
 
@@ -152,6 +169,17 @@ body {
   }
 }
 
+@media (max-width: 400px) {
+  .marquee-label {
+    min-width: 64px !important;
+    padding-left: 16px !important;
+    padding-right: 10px !important;
+  }
+  .marquee-label-text {
+    display: none !important;
+  }
+}
+
 /* Marquee track : compense le label overlay — 240px desktop, 130px mobile */
 .marquee-track {
   padding-left: 240px;
@@ -161,6 +189,18 @@ body {
     padding-left: 130px !important;
   }
 }
+@media (max-width: 400px) {
+  .marquee-track {
+    padding-left: 76px !important;
+  }
+}
+
+/* Watermark projets : masqué sur mobile */
+@media (max-width: 640px) {
+  .proj-watermark {
+    display: none !important;
+  }
+}
 
 /* Project scenes : 1 colonne + retire le sticky sur mobile */
 @media (max-width: 960px) {
@@ -168,16 +208,27 @@ body {
     position: relative !important;
     min-height: auto !important;
     padding: clamp(48px, 6vw, 80px) 0 !important;
-    /* Évite que le z-index crée un contexte de stacking par-dessus le heading */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     z-index: auto !important;
     isolation: auto !important;
   }
+  .proj-scene:first-child {
+    border-top: none;
+  }
   .proj-scene__grid {
     grid-template-columns: 1fr !important;
-    gap: 32px !important;
+    gap: 28px !important;
+  }
+  /* Image avant le texte sur mobile */
+  .proj-image-col {
+    order: -1;
   }
   .proj-browser-wrap .browser-frame {
     transform: none !important;
+  }
+  /* Compteur mobile visible */
+  .proj-mobile-counter {
+    display: block !important;
   }
 }
 
@@ -201,6 +252,62 @@ body {
     width: 100%;
     justify-content: center;
     display: flex;
+  }
+}
+
+/* About — layout 2 colonnes sur grands écrans */
+.about-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.about-col-left {
+  width: 100%;
+  max-width: 780px;
+  text-align: center;
+}
+
+.about-col-right {
+  width: 100%;
+  max-width: 640px;
+}
+
+@media (min-width: 1280px) {
+  .about-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 80px;
+  }
+  .about-col-left {
+    flex: 1;
+    max-width: none;
+  }
+  .about-col-right {
+    flex: 0 0 420px;
+    padding-top: 20px;
+  }
+  .about-stats {
+    justify-content: flex-start !important;
+  }
+}
+
+/* About — stats gap responsive */
+.about-stats {
+  gap: 48px;
+}
+@media (max-width: 640px) {
+  .about-stats {
+    gap: 28px !important;
+  }
+}
+
+/* About — info grid 1 col sur très petits écrans */
+@media (max-width: 420px) {
+  .about-info-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
   }
 }
 

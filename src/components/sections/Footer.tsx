@@ -24,7 +24,7 @@ const socials = [
 export default function Footer() {
   return (
     <footer className="border-t border-white/6">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:px-10 lg:px-16">
+      <div className="mx-auto py-10" style={{ maxWidth: 'var(--maxw, 1280px)', padding: '40px var(--pad, clamp(20px, 4vw, 56px))' }}>
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
 
           <div>
@@ -42,7 +42,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={label}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-slate-400 transition-all duration-200 hover:border-white/15 hover:bg-white/[0.08] hover:text-white"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/8 bg-white/[0.04] text-slate-400 transition-all duration-200 hover:border-white/15 hover:bg-white/[0.08] hover:text-white"
               >
                 {icon}
               </a>
