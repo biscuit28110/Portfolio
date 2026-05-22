@@ -202,7 +202,7 @@ export function ContactForm() {
         .cf-field textarea:focus + .cf-label,
         .cf-field textarea:not(:placeholder-shown) + .cf-label {
           top: 7px !important;
-          font-size: 10.5px !important;
+          font-size: 11px !important;
           color: #22d3ee !important;
           letter-spacing: 0.08em !important;
           text-transform: uppercase !important;

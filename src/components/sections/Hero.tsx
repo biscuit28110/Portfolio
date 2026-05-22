@@ -41,7 +41,7 @@ export default function Hero() {
             maxWidth: 1100,
             margin: '0 auto',
             padding: '140px clamp(20px, 4vw, 56px) 120px',
-            paddingLeft: 'max(clamp(20px, 4vw, 56px), 120px)',
+            paddingLeft: 'var(--hero-pad-left)',
           }}
           className="hero-content"
         >

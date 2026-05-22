@@ -89,11 +89,11 @@ export function MarqueeBand({ band }: MarqueeBandProps) {
               animation: 'pulse-dot 2.4s ease-in-out infinite',
             }}
           />
-          <span style={{ fontWeight: 600, fontSize: 14, color: '#fff', letterSpacing: '-0.01em' }}>
+          <span className="marquee-label-text" style={{ fontWeight: 600, fontSize: 14, color: '#fff', letterSpacing: '-0.01em' }}>
             {band.label}
           </span>
         </div>
-        <span style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 10.5, color: band.color, letterSpacing: '0.04em' }}>
+        <span className="marquee-label-text" style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 11, color: band.color, letterSpacing: '0.04em' }}>
           {band.sub}
         </span>
       </div>

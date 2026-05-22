@@ -117,14 +117,14 @@ export function SideNav() {
                 width: 48,
                 height: 48,
                 borderRadius: '50%',
-                border: isActive ? 'none' : '1px solid rgba(255,255,255,0.10)',
                 background: isActive
-                  ? '#3b82f6'
+                  ? 'rgba(34,211,238,0.15)'
                   : 'rgba(15,23,42,0.55)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                color: isActive ? '#fff' : 'rgba(255,255,255,0.55)',
-                boxShadow: isActive ? '0 0 24px rgba(59,130,246,0.45)' : 'none',
+                border: isActive ? '1px solid rgba(34,211,238,0.35)' : '1px solid rgba(255,255,255,0.10)',
+                color: isActive ? '#22d3ee' : 'rgba(255,255,255,0.55)',
+                boxShadow: isActive ? '0 0 20px rgba(34,211,238,0.25)' : 'none',
                 transition: 'all 250ms cubic-bezier(.22,1,.36,1)',
                 textDecoration: 'none',
               }}
