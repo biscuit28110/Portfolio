@@ -26,9 +26,10 @@ type Field = {
 };
 
 const FIELDS: Field[] = [
-  { label: 'Nom complet',       id: 'name',    type: 'text',     required: true,  span: false, autoComplete: 'name' },
+  { label: 'Prénom',            id: 'prenom',  type: 'text',     required: true,  span: false, autoComplete: 'given-name' },
+  { label: 'Nom',               id: 'nom',     type: 'text',     required: true,  span: false, autoComplete: 'family-name' },
   { label: 'Email',             id: 'email',   type: 'email',    required: true,  span: false, autoComplete: 'email' },
-  { label: 'Sujet (optionnel)', id: 'subject', type: 'text',     required: false, span: true,  autoComplete: 'off' },
+  { label: 'Sujet (optionnel)', id: 'subject', type: 'text',     required: false, span: false, autoComplete: 'off' },
   { label: 'Votre message',     id: 'message', type: 'textarea', required: true,  span: true,  textarea: true, autoComplete: 'off' },
 ];
 
@@ -43,12 +44,13 @@ export function ContactForm() {
     setSending(true);
 
     const data    = new FormData(e.currentTarget);
-    const name    = data.get('name')    as string;
+    const prenom  = data.get('prenom')  as string;
+    const nom     = data.get('nom')     as string;
     const email   = data.get('email')   as string;
     const subject = (data.get('subject') as string) || 'Message depuis le portfolio';
     const message = data.get('message') as string;
 
-    const body = encodeURIComponent(`Bonjour Traviss,\n\n${message}\n\n— ${name}\n${email}`);
+    const body = encodeURIComponent(`Bonjour Traviss,\n\n${message}\n\n— ${prenom} ${nom}\n${email}`);
     const sub  = encodeURIComponent(subject);
     window.location.href = `mailto:contact@traviss.dev?subject=${sub}&body=${body}`;
 
