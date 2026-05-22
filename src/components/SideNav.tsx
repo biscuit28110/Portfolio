@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const NAV_ITEMS = [
   { label: 'Accueil',   href: '#top',        icon: HomeIcon },
@@ -100,68 +101,91 @@ export function SideNav() {
     >
       {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
         const isActive = active === href;
+        const isHovered = hovered === href;
         return (
-          <div key={href} style={{ position: 'relative' }}>
-            <a
-              href={href}
-              aria-label={label}
-              aria-current={isActive ? 'page' : undefined}
-              onMouseEnter={() => setHovered(href)}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => setHovered(href)}
-              onBlur={() => setHovered(null)}
+          <motion.a
+            key={href}
+            href={href}
+            aria-label={label}
+            aria-current={isActive ? 'page' : undefined}
+            onMouseEnter={() => setHovered(href)}
+            onMouseLeave={() => setHovered(null)}
+            onFocus={() => setHovered(href)}
+            onBlur={() => setHovered(null)}
+            animate={{
+              width: isHovered ? 148 : 48,
+              background: isActive
+                ? 'rgba(34,211,238,0.15)'
+                : isHovered
+                ? 'rgba(2,6,23,0.82)'
+                : 'rgba(15,23,42,0.55)',
+              borderColor: isActive
+                ? 'rgba(34,211,238,0.35)'
+                : isHovered
+                ? 'rgba(255,255,255,0.18)'
+                : 'rgba(255,255,255,0.10)',
+              color: isActive ? '#22d3ee' : isHovered ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.55)',
+              boxShadow: isActive
+                ? '0 0 20px rgba(34,211,238,0.25)'
+                : isHovered
+                ? '0 4px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)'
+                : 'none',
+            }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              height: 48,
+              borderRadius: 24,
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              border: '1px solid',
+              overflow: 'hidden',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            {/* Icône — toujours centrée dans les 48px du cercle */}
+            <span
               style={{
+                width: 48,
+                minWidth: 48,
+                height: 48,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 48,
-                height: 48,
-                borderRadius: '50%',
-                background: isActive
-                  ? 'rgba(34,211,238,0.15)'
-                  : 'rgba(15,23,42,0.55)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: isActive ? '1px solid rgba(34,211,238,0.35)' : '1px solid rgba(255,255,255,0.10)',
-                color: isActive ? '#22d3ee' : 'rgba(255,255,255,0.55)',
-                boxShadow: isActive ? '0 0 20px rgba(34,211,238,0.25)' : 'none',
-                transition: 'all 250ms cubic-bezier(.22,1,.36,1)',
-                textDecoration: 'none',
+                flexShrink: 0,
               }}
             >
               <Icon />
-            </a>
+            </span>
 
-            {/* Tooltip */}
-            {hovered === href && (
-              <div
-                style={{
-                  position: 'absolute',
-                  left: 58,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  padding: '6px 11px',
-                  background: 'rgba(2,6,23,0.95)',
-                  border: '1px solid rgba(255,255,255,0.10)',
-                  borderRadius: 8,
-                  fontFamily: 'var(--font-geist-mono, ui-monospace)',
-                  fontSize: 11,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: '#cbd5e1',
-                  whiteSpace: 'nowrap',
-                  maxWidth: 'calc(100vw - 100px)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  pointerEvents: 'none',
-                  zIndex: 70,
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-                }}
-              >
-                {label}
-              </div>
-            )}
-          </div>
+            {/* Label — slide + fade depuis la droite */}
+            <motion.span
+              animate={{
+                opacity: isHovered ? 1 : 0,
+                x: isHovered ? 0 : -8,
+              }}
+              transition={{
+                duration: 0.22,
+                ease: [0.22, 1, 0.36, 1],
+                delay: isHovered ? 0.06 : 0,
+              }}
+              style={{
+                fontFamily: 'var(--font-geist-mono, ui-monospace)',
+                fontSize: 11,
+                letterSpacing: '0.07em',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
+                paddingRight: 18,
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }}
+            >
+              {label}
+            </motion.span>
+          </motion.a>
         );
       })}
     </nav>
