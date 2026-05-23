@@ -24,7 +24,7 @@ export function MobileNav() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
-        className="min-[861px]:hidden"
+        className="flex min-[861px]:hidden"
         style={{
           position: 'fixed',
           top: 24,
@@ -32,7 +32,7 @@ export function MobileNav() {
           zIndex: 70,
           width: 44,
           height: 44,
-          display: 'flex',
+
           background: 'none',
           border: 'none',
           alignItems: 'center',

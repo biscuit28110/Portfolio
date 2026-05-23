@@ -4,8 +4,7 @@ import { BlobBg } from '@/components/ui/BlobBg';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { GradientText } from '@/components/ui/GradientText';
 import { CareerMap } from '@/components/career/CareerMap';
-import { EducationGrid } from '@/components/career/EducationGrid';
-import { experiences, education } from '@/data/experience';
+import { experiences } from '@/data/experience';
 
 export default function Experience() {
   return (
@@ -34,8 +33,6 @@ export default function Experience() {
         />
 
         <CareerMap entries={experiences} />
-
-        <EducationGrid entries={education} />
       </div>
     </section>
   );
