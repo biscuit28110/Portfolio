@@ -27,46 +27,57 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
         display: 'flex',
         alignItems: 'center',
         background: '#020617',
-        overflow: 'hidden',
+        /* overflow: hidden retiré du sticky — incompatible sur certains navigateurs.
+           Le clipping est délégué au wrapper décoratif ci-dessous. */
         isolation: 'isolate',
         zIndex: 1,
       }}
     >
-      {/* Per-scene background gradient */}
+      {/* Wrapper décoratif — clip les éléments absolus sans casser le sticky */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
+          overflow: 'hidden',
+          overflowX: 'clip',
+          overflowY: 'clip',
           zIndex: 0,
-          background: `
-            radial-gradient(ellipse 60% 50% at 80% 30%, color-mix(in oklab, ${accent.primary} 12%, transparent), transparent 60%),
-            radial-gradient(ellipse 50% 40% at 20% 80%, color-mix(in oklab, ${accent.secondary} 8%, transparent), transparent 60%)
-          `,
-          opacity: 0.7,
-        }}
-      />
-
-      {/* Giant watermark number */}
-      <div
-        aria-hidden="true"
-        className="proj-watermark"
-        style={{
-          position: 'absolute',
-          right: '-3vw',
-          bottom: '-12vh',
-          fontSize: 'clamp(120px, 30vw, 520px)',
-          lineHeight: 0.8,
-          fontWeight: 800,
-          color: 'rgba(255,255,255,0.025)',
-          letterSpacing: '-0.06em',
-          userSelect: 'none',
           pointerEvents: 'none',
-          zIndex: 0,
-          fontFamily: 'var(--font-geist-mono, ui-monospace)',
         }}
       >
-        {sceneNum}
+        {/* Per-scene background gradient */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `
+              radial-gradient(ellipse 60% 50% at 80% 30%, color-mix(in oklab, ${accent.primary} 12%, transparent), transparent 60%),
+              radial-gradient(ellipse 50% 40% at 20% 80%, color-mix(in oklab, ${accent.secondary} 8%, transparent), transparent 60%)
+            `,
+            opacity: 0.7,
+          }}
+        />
+
+        {/* Giant watermark number */}
+        <div
+          className="proj-watermark"
+          style={{
+            position: 'absolute',
+            right: 0,
+            bottom: '-10vh',
+            fontSize: 'clamp(120px, 30vw, 520px)',
+            lineHeight: 0.8,
+            fontWeight: 800,
+            color: 'rgba(255,255,255,0.025)',
+            letterSpacing: '-0.06em',
+            userSelect: 'none',
+            pointerEvents: 'none',
+            fontFamily: 'var(--font-geist-mono, ui-monospace)',
+          }}
+        >
+          {sceneNum}
+        </div>
       </div>
 
       {/* Compteur mobile — caché sur desktop */}

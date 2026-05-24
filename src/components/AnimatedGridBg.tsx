@@ -9,8 +9,11 @@ export function AnimatedGridBg() {
         inset: 0,
         perspective: '900px',
         overflow: 'hidden',
+        overflowX: 'clip',
+        overflowY: 'clip',
         zIndex: 0,
         pointerEvents: 'none',
+        contain: 'strict',
       }}
     >
       {/* Plane bas — défile vers le bas */}

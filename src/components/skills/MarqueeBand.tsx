@@ -46,11 +46,14 @@ export function MarqueeBand({ band }: MarqueeBandProps) {
         position: 'relative',
         height: 130,
         overflow: 'hidden',
+        overflowX: 'clip', /* plus strict que hidden — résiste aux transforms GPU */
         display: 'flex',
         alignItems: 'center',
         borderTop: '1px solid rgba(255,255,255,0.05)',
         borderBottom: '1px solid rgba(255,255,255,0.05)',
         background: 'rgba(255,255,255,0.01)',
+        contain: 'layout',
+        isolation: 'isolate',
       }}
       onMouseEnter={() => {
         if (trackRef.current) trackRef.current.style.animationPlayState = 'paused';

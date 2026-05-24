@@ -19,11 +19,21 @@ const colorMap = {
 
 export function BlobBg({ blobs }: BlobBgProps) {
   return (
-    <>
+    <div
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        overflow: 'hidden',
+        overflowX: 'clip',
+        overflowY: 'clip',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}
+    >
       {blobs.map((b, i) => (
         <div
           key={i}
-          aria-hidden="true"
           style={{
             position: 'absolute',
             width: b.size,
@@ -41,6 +51,6 @@ export function BlobBg({ blobs }: BlobBgProps) {
           }}
         />
       ))}
-    </>
+    </div>
   );
 }

@@ -96,6 +96,8 @@ export function SideNav() {
         zIndex: 60,
         flexDirection: 'column',
         gap: 10,
+        maxWidth: 'calc(100vw - 32px)',
+        overflow: 'visible', /* le pill doit être visible, mais limité par max-width */
       }}
       className="hidden min-[861px]:flex"
     >

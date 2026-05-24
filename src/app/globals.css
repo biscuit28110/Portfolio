@@ -20,6 +20,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden; /* iOS Safari — body seul ne suffit pas */
+  max-width: 100%;
 }
 
 body {
@@ -28,6 +30,7 @@ body {
   text-rendering: optimizeLegibility;
   letter-spacing: -0.005em;
   overflow-x: hidden;
+  max-width: 100%;
 }
 
 ::selection {
