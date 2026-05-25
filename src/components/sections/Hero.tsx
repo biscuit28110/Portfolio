@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { SideNav } from '@/components/SideNav';
 import { AvatarTopRight } from '@/components/AvatarTopRight';
 import { AnimatedGridBg } from '@/components/AnimatedGridBg';
@@ -45,6 +46,29 @@ export default function Hero() {
           }}
           className="hero-content"
         >
+          {/* Photo — visible uniquement mobile/tablette (desktop = AvatarTopRight) */}
+          <div className="hero-avatar-mobile">
+            <div style={{
+              width: 80,
+              height: 80,
+              borderRadius: '50%',
+              overflow: 'hidden',
+              border: '2px solid rgba(255,255,255,0.20)',
+              boxShadow: '0 0 28px rgba(34,211,238,0.20)',
+              position: 'relative',
+              marginBottom: 28,
+            }}>
+              <Image
+                src="/assets/images/cv.png"
+                alt="Traviss Talamaku"
+                fill
+                sizes="80px"
+                style={{ objectFit: 'cover' }}
+                priority
+              />
+            </div>
+          </div>
+
           {/* Name */}
           <h1
             style={{

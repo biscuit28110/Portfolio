@@ -96,7 +96,7 @@ body {
 
 /* ─── Responsive layout fixes ─── */
 
-/* Avatar */
+/* Avatar desktop (floating top-right) */
 .avatar-ring {
   width: 88px;
   height: 88px;
@@ -105,6 +105,17 @@ body {
 @media (max-width: 860px) {
   .avatar-link {
     display: none !important;
+  }
+}
+
+/* Avatar hero inline — visible sur mobile/tablette, caché sur desktop */
+.hero-avatar-mobile {
+  display: block;
+}
+
+@media (min-width: 861px) {
+  .hero-avatar-mobile {
+    display: none;
   }
 }
 
