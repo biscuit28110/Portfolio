@@ -1,6 +1,8 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { EducationEntry } from '@/data/experience';
+import { EASE } from '@/lib/motion';
 
 type EducationGridProps = {
   entries: EducationEntry[];
@@ -8,7 +10,11 @@ type EducationGridProps = {
 
 export function EducationGrid({ entries }: EducationGridProps) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.6, ease: EASE }}
       style={{
         marginTop: 120,
         paddingTop: 60,
@@ -52,9 +58,13 @@ export function EducationGrid({ entries }: EducationGridProps) {
         }}
         className="edu-grid"
       >
-        {entries.map((edu) => (
-          <div
+        {entries.map((edu, i) => (
+          <motion.div
             key={edu.slug}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.12 }}
+            transition={{ duration: 0.55, ease: EASE, delay: i * 0.1 }}
             style={{
               padding: 28,
               border: '1px solid rgba(255,255,255,0.08)',
@@ -88,9 +98,9 @@ export function EducationGrid({ entries }: EducationGridProps) {
             <div style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 11, color: '#22d3ee', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
               {edu.result}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { ExperienceEntry } from '@/data/experience';
 import { CareerNav } from './CareerNav';
 import { CareerCard } from './CareerCard';
@@ -11,33 +12,58 @@ type CareerMapProps = {
 
 export function CareerMap({ entries }: CareerMapProps) {
   const [activeSlug, setActiveSlug] = useState(entries[0]?.slug ?? '');
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(entries.length > 0 ? (1 / entries.length) * 100 : 0);
 
-  const activeIdx  = entries.findIndex((e) => e.slug === activeSlug);
+  const activeIdx   = entries.findIndex((e) => e.slug === activeSlug);
   const activeEntry = entries[activeIdx] ?? entries[0];
 
+  /* Scroll listener — mobile only (desktop uses nav clicks) */
   useEffect(() => {
-    const cards = entries.map((e) => document.getElementById(`card-${e.slug}`)).filter(Boolean) as HTMLElement[];
+    if (typeof window === 'undefined') return;
 
-    const observer = new IntersectionObserver(
-      (observedEntries) => {
-        for (const entry of observedEntries) {
-          if (entry.isIntersecting) {
-            const cardId = entry.target.id.replace('card-', '');
-            const idx = entries.findIndex((e) => e.slug === cardId);
-            if (idx !== -1) {
-              setActiveSlug(entries[idx].slug);
-              setProgress(((idx + 1) / entries.length) * 100);
-            }
-          }
+    let rafId: number | null = null;
+
+    const updateActive = () => {
+      if (window.innerWidth >= 960) { rafId = null; return; }
+
+      const anchor = window.innerHeight * 0.35;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+
+      entries.forEach((e, idx) => {
+        const card = document.getElementById(`mobile-card-${e.slug}`);
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        const dist = Math.abs(rect.top - anchor);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = idx;
         }
-      },
-      { rootMargin: '-40% 0px -50% 0px' }
-    );
+      });
 
-    cards.forEach((c) => observer.observe(c));
-    return () => observer.disconnect();
+      setActiveSlug(entries[bestIdx].slug);
+      setProgress(((bestIdx + 1) / entries.length) * 100);
+      rafId = null;
+    };
+
+    const onScroll = () => {
+      if (rafId === null) rafId = requestAnimationFrame(updateActive);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateActive();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, [entries]);
+
+  const handleNavSelect = (slug: string) => {
+    const idx = entries.findIndex((e) => e.slug === slug);
+    setActiveSlug(slug);
+    setProgress(((idx + 1) / entries.length) * 100);
+  };
 
   return (
     <>
@@ -100,24 +126,46 @@ export function CareerMap({ entries }: CareerMapProps) {
 
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: '320px 1fr',
+          display: 'flex',
+          alignItems: 'flex-start',
           gap: 80,
           position: 'relative',
         }}
         className="career-map"
       >
-        <CareerNav
-          entries={entries}
-          activeSlug={activeSlug}
-          progress={progress}
-          onSelect={setActiveSlug}
-        />
+        {/* Nav sticky — desktop uniquement, hauteur = panel desktop */}
+        <div style={{ width: 320, flexShrink: 0, alignSelf: 'stretch' }}>
+          <CareerNav
+            entries={entries}
+            activeSlug={activeSlug}
+            progress={progress}
+            onSelect={handleNavSelect}
+          />
+        </div>
 
-        <div>
-          {entries.map((entry) => (
-            <CareerCard key={entry.slug} entry={entry} id={`card-${entry.slug}`} />
-          ))}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {/* Desktop — 1 seule carte active, animée */}
+          <div className="career-desktop-panel">
+            <AnimatePresence mode="wait">
+              <CareerCard
+                key={activeSlug}
+                entry={activeEntry}
+                id={`card-${activeEntry.slug}`}
+                immediate
+              />
+            </AnimatePresence>
+          </div>
+
+          {/* Mobile — toutes les cartes empilées */}
+          <div className="career-mobile-stack">
+            {entries.map((entry) => (
+              <CareerCard
+                key={entry.slug}
+                entry={entry}
+                id={`mobile-card-${entry.slug}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </>

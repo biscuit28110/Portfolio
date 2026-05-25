@@ -163,10 +163,24 @@ body {
   }
 }
 
+/* Career desktop panel (1 card at a time) vs mobile stack (all cards) */
+.career-desktop-panel {
+  display: block;
+}
+.career-mobile-stack {
+  display: none;
+}
+
 /* Career map : 1 colonne sur mobile */
 @media (max-width: 960px) {
+  .career-desktop-panel {
+    display: none;
+  }
+  .career-mobile-stack {
+    display: block;
+  }
   .career-map {
-    grid-template-columns: 1fr !important;
+    flex-direction: column !important;
     gap: 0 !important;
   }
   .career-nav-wrap {
@@ -266,11 +280,12 @@ body {
   }
 }
 
-/* BrowserFrame — aspect-ratio plus tall sur mobile + désactive transition 3D */
+/* BrowserFrame — aspect-ratio plus tall sur mobile + désactive transition et tilt 3D */
 @media (max-width: 960px) {
   .browser-frame {
     aspect-ratio: 4/3 !important;
     transition: none !important;
+    transform: none !important;
   }
 }
 

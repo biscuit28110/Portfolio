@@ -23,7 +23,7 @@ export function ProjectsStack() {
           }
         }
       },
-      { rootMargin: '-45% 0px -50% 0px' }
+      { rootMargin: '-30% 0px -35% 0px' }
     );
 
     const stackObserver = new IntersectionObserver(

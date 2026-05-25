@@ -78,7 +78,7 @@ export function SideNav() {
           }
         }
       },
-      { rootMargin: '-40% 0px -55% 0px' }
+      { rootMargin: '-30% 0px -40% 0px' }
     );
 
     sections.forEach((s) => observer.observe(s));

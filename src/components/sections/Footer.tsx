@@ -24,7 +24,7 @@ const socials = [
 export default function Footer() {
   return (
     <footer className="border-t border-white/6">
-      <div className="mx-auto py-10" style={{ maxWidth: 'var(--maxw, 1280px)', padding: '40px var(--pad, clamp(20px, 4vw, 56px))' }}>
+      <div style={{ maxWidth: 'var(--maxw, 1280px)', margin: '0 auto', padding: '40px var(--pad, clamp(20px, 4vw, 56px))' }}>
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
 
           <div>

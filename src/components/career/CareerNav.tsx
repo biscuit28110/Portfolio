@@ -16,11 +16,10 @@ export function CareerNav({ entries, activeSlug, progress, onSelect }: CareerNav
       style={{
         position: 'sticky',
         top: 120,
-        alignSelf: 'start',          /* empêche le nav de s'étirer — indispensable pour sticky en grid */
         paddingLeft: 28,
         borderLeft: '1px solid rgba(255,255,255,0.08)',
       }}
-      className="career-nav-wrap hidden md:block"
+      className="career-nav-wrap"
     >
       {/* Progress line */}
       <div

@@ -10,7 +10,7 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      style={{ padding: 'clamp(100px, 10vw, 140px) 0', position: 'relative', overflow: 'clip' }}
+      style={{ padding: 'clamp(100px, 10vw, 140px) 0', position: 'relative', overflowX: 'clip' }}
     >
       <BlobBg blobs={[
         { color: 'violet', size: 520, top: '10%',   right: '-180px', opacity: 0.06 },
