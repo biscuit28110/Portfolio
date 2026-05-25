@@ -273,6 +273,12 @@ body {
   }
 }
 
+/* Project grid — desktop (valeurs de base, hors inline style) */
+.proj-scene__grid {
+  grid-template-columns: 0.95fr 1.35fr;
+  gap: 64px;
+}
+
 /* Project scenes : 1 colonne + retire le sticky sur mobile */
 @media (max-width: 960px) {
   .proj-scene {
@@ -287,8 +293,8 @@ body {
     border-top: none;
   }
   .proj-scene__grid {
-    grid-template-columns: 1fr !important;
-    gap: 28px !important;
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
   /* Image avant le texte sur mobile */
   .proj-image-col {

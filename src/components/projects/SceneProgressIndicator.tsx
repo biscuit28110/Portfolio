@@ -17,7 +17,6 @@ export function SceneProgressIndicator({ projects, activeIndex, visible }: Scene
         top: '50%',
         transform: 'translateY(-50%)',
         zIndex: 40,
-        display: 'flex',
         flexDirection: 'column',
         gap: 20,
         opacity: visible ? 1 : 0,
