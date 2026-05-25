@@ -196,6 +196,23 @@ body {
   .skills-stats {
     grid-template-columns: 1fr 1fr !important;
   }
+  /* Supprime le border-right sur la 2e et 4e cellule (bord droit de la grille) */
+  .skills-stat-cell--1,
+  .skills-stat-cell--3 {
+    border-right: none !important;
+  }
+  /* Séparateur horizontal entre les 2 rangées */
+  .skills-stat-cell--0,
+  .skills-stat-cell--1 {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+}
+
+/* Marquee : hauteur réduite sur mobile */
+@media (max-width: 640px) {
+  .marquee-band {
+    height: 96px !important;
+  }
 }
 
 /* Marquee label : réduit la largeur de l'overlay sur mobile */

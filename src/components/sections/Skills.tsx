@@ -11,7 +11,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      style={{ padding: 'clamp(100px, 10vw, 140px) 0', position: 'relative', overflow: 'hidden' }}
+      style={{ padding: 'clamp(60px, 10vw, 140px) 0', position: 'relative', overflow: 'hidden' }}
     >
       <BlobBg blobs={[
         { color: 'cyan',   size: 560, top: '-120px', right: '-160px', opacity: 0.06 },

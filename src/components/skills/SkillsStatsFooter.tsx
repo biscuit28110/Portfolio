@@ -20,8 +20,9 @@ export function SkillsStatsFooter() {
       {STATS.map((s, i) => (
         <div
           key={s.label}
+          className={`skills-stat-cell skills-stat-cell--${i}`}
           style={{
-            padding: '16px 24px',
+            padding: 'clamp(12px, 2vw, 16px) clamp(14px, 2.5vw, 24px)',
             borderRight: i < STATS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
           }}
         >
@@ -42,7 +43,7 @@ export function SkillsStatsFooter() {
             {s.label}
           </div>
           <div>
-            <span style={{ fontSize: 32, fontWeight: 600, color: '#fff', letterSpacing: '-0.025em', lineHeight: 1 }}>
+            <span style={{ fontSize: 'clamp(24px, 2.8vw, 32px)', fontWeight: 600, color: '#fff', letterSpacing: '-0.025em', lineHeight: 1 }}>
               {s.count}
             </span>
             {' '}

@@ -42,6 +42,7 @@ export function MarqueeBand({ band }: MarqueeBandProps) {
 
   return (
     <div
+      className="marquee-band"
       style={{
         position: 'relative',
         height: 130,
@@ -55,11 +56,13 @@ export function MarqueeBand({ band }: MarqueeBandProps) {
         contain: 'layout',
         isolation: 'isolate',
       }}
-      onMouseEnter={() => {
-        if (trackRef.current) trackRef.current.style.animationPlayState = 'paused';
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'mouse' && trackRef.current)
+          trackRef.current.style.animationPlayState = 'paused';
       }}
-      onMouseLeave={() => {
-        if (trackRef.current) trackRef.current.style.animationPlayState = 'running';
+      onPointerLeave={(e) => {
+        if (e.pointerType === 'mouse' && trackRef.current)
+          trackRef.current.style.animationPlayState = 'running';
       }}
     >
       {/* Left label overlay */}

@@ -23,14 +23,14 @@ export function SkillChip({ skill, color }: SkillChipProps) {
           transition: 'opacity 250ms ease, transform 250ms ease',
           ['--chip-color' as string]: color,
         }}
-        onMouseEnter={(e) => {
+        onPointerEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.opacity = '1';
           el.style.transform = 'scale(1.05)';
           const img = el.querySelector('img') as HTMLImageElement | null;
           if (img) img.style.filter = `drop-shadow(0 0 12px ${color}) drop-shadow(0 0 24px ${color}80)`;
         }}
-        onMouseLeave={(e) => {
+        onPointerLeave={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.opacity = '0.85';
           el.style.transform = 'scale(1)';
@@ -67,12 +67,12 @@ export function SkillChip({ skill, color }: SkillChipProps) {
         cursor: 'default',
         transition: 'color 250ms ease',
       }}
-      onMouseEnter={(e) => {
+      onPointerEnter={(e) => {
         (e.currentTarget as HTMLElement).style.color = '#fff';
         const dot = (e.currentTarget as HTMLElement).querySelector('span') as HTMLElement | null;
         if (dot) dot.style.boxShadow = `0 0 0 5px ${color}40`;
       }}
-      onMouseLeave={(e) => {
+      onPointerLeave={(e) => {
         (e.currentTarget as HTMLElement).style.color = '#94a3b8';
         const dot = (e.currentTarget as HTMLElement).querySelector('span') as HTMLElement | null;
         if (dot) dot.style.boxShadow = `0 0 0 3px ${color}30`;
