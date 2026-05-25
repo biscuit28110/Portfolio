@@ -6,6 +6,7 @@ import { AvatarTopRight } from '@/components/AvatarTopRight';
 import { AnimatedGridBg } from '@/components/AnimatedGridBg';
 import { MobileNav } from '@/components/MobileNav';
 import { Typewriter } from '@/components/Typewriter';
+import { AuroraOrbs } from '@/components/AuroraOrbs';
 
 const ROLES = ['Technicien Informatique', 'Développeur Web', 'Passionné de Tech'];
 
@@ -32,6 +33,7 @@ export default function Hero() {
           background: '#020617',
         }}
       >
+        <AuroraOrbs />
         <AnimatedGridBg />
 
         {/* Content */}
