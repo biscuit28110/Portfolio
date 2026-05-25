@@ -1,8 +1,56 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { ProjectEntry } from '@/data/projects';
 import { BrowserFrame } from '@/components/ui/BrowserFrame';
+
+// ─── Deck-flip variants — mobile/tablette uniquement ───────────────────────
+
+const makeCardV = (dir: number) => ({
+  hidden: { rotateY: dir, scale: 0.88, opacity: 0 },
+  visible: {
+    rotateY: 0, scale: 1, opacity: 1,
+    transition: { type: 'spring' as const, stiffness: 60, damping: 16 },
+  },
+});
+
+const textColV = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.28 } },
+};
+
+const itemV = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { type: 'spring' as const, stiffness: 110, damping: 20 },
+  },
+};
+
+const imageV = {
+  hidden: { opacity: 0, scale: 0.93, y: 28 },
+  visible: {
+    opacity: 1, scale: 1, y: 0,
+    transition: { type: 'spring' as const, stiffness: 70, damping: 17, delay: 0.36 },
+  },
+};
+
+function useIsMobile() {
+  const [mob, setMob] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 960px)').matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 960px)');
+    const h = (e: MediaQueryListEvent) => setMob(e.matches);
+    mq.addEventListener('change', h);
+    return () => mq.removeEventListener('change', h);
+  }, []);
+  return mob;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
 
 type ProjectSceneProps = {
   project: ProjectEntry;
@@ -11,9 +59,17 @@ type ProjectSceneProps = {
 };
 
 export function ProjectScene({ project, index, total }: ProjectSceneProps) {
+  const mob = useIsMobile();
   const { accent } = project;
   const sceneNum = String(index).padStart(2, '0');
   const urlDisplay = project.liveUrl.replace(/^https?:\/\//, '');
+
+  // Alternance gauche/droite pour l'effet "jeu de cartes retourné"
+  const flipDir = index % 2 === 0 ? 85 : -85;
+  const cardVariants = makeCardV(flipDir);
+
+  // Stat Type — tronqué au premier séparateur (/ ou ·) pour éviter les débordements
+  const typeShort = project.type.split(/[/·]/)[0].trim();
 
   return (
     <div
@@ -27,26 +83,22 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
         display: 'flex',
         alignItems: 'center',
         background: '#020617',
-        /* overflow: hidden retiré du sticky — incompatible sur certains navigateurs.
-           Le clipping est délégué au wrapper décoratif ci-dessous. */
         isolation: 'isolate',
         zIndex: 1,
       }}
     >
-      {/* Wrapper décoratif — clip les éléments absolus sans casser le sticky */}
+      {/* Wrapper décoratif — overflow: hidden (compatible iOS Safari, remplace clip) */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
           overflow: 'hidden',
-          overflowX: 'clip',
-          overflowY: 'clip',
           zIndex: 0,
           pointerEvents: 'none',
         }}
       >
-        {/* Per-scene background gradient */}
+        {/* Gradient d'ambiance par scène */}
         <div
           style={{
             position: 'absolute',
@@ -59,7 +111,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
           }}
         />
 
-        {/* Giant watermark number */}
+        {/* Watermark — masqué sous 960px via globals.css */}
         <div
           className="proj-watermark"
           style={{
@@ -80,9 +132,13 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
         </div>
       </div>
 
-      {/* Compteur mobile — caché sur desktop */}
-      <div
+      {/* Compteur mobile — visibility via globals.css */}
+      <motion.div
         className="proj-mobile-counter"
+        variants={mob ? itemV : undefined}
+        initial={mob ? 'hidden' : false}
+        whileInView={mob ? 'visible' : undefined}
+        viewport={{ once: true, amount: 0.3 }}
         style={{
           position: 'relative',
           zIndex: 2,
@@ -91,7 +147,6 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
           padding: '0 clamp(20px, 4vw, 56px)',
           width: '100%',
           marginBottom: 24,
-          display: 'none',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -106,10 +161,10 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
             {String(index).padStart(2, '0')}&thinsp;/&thinsp;{String(total).padStart(2, '0')}
           </span>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Content grid */}
-      <div
+      {/* Grille de contenu — deck flip sur mobile/tablette */}
+      <motion.div
         style={{
           position: 'relative',
           zIndex: 1,
@@ -119,18 +174,25 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
           width: '100%',
           display: 'grid',
           alignItems: 'center',
+          ...(mob ? { transformPerspective: 1400 } : {}),
         }}
         className="proj-scene__grid"
+        variants={mob ? cardVariants : undefined}
+        initial={mob ? 'hidden' : false}
+        whileInView={mob ? 'visible' : undefined}
+        viewport={{ once: true, amount: 0.15 }}
       >
-        {/* Text column */}
-        <div className="proj-text-col">
+        {/* Colonne texte — stagger parent sur mobile */}
+        <motion.div className="proj-text-col" variants={mob ? textColV : undefined}>
+
           {/* Badge */}
-          <div
+          <motion.div
+            variants={mob ? itemV : undefined}
             style={{
               fontFamily: 'var(--font-geist-mono, ui-monospace)',
               fontSize: 11,
               letterSpacing: '0.14em',
-              textTransform: 'uppercase',
+              textTransform: 'uppercase' as const,
               fontWeight: 600,
               color: accent.primary,
               marginBottom: 20,
@@ -141,10 +203,11 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
           >
             <span style={{ display: 'block', width: 24, height: 1, background: accent.primary }} />
             {project.badge}
-          </div>
+          </motion.div>
 
-          {/* Title */}
-          <h3
+          {/* Titre */}
+          <motion.h3
+            variants={mob ? itemV : undefined}
             style={{
               fontWeight: 700,
               fontSize: 'clamp(28px, 4.5vw, 72px)',
@@ -172,10 +235,11 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                 <span key={wi}>{word} </span>
               );
             })}
-          </h3>
+          </motion.h3>
 
-          {/* Type mono */}
-          <p
+          {/* Type */}
+          <motion.p
+            variants={mob ? itemV : undefined}
             style={{
               fontFamily: 'var(--font-geist-mono, ui-monospace)',
               fontSize: 13,
@@ -187,10 +251,11 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
             }}
           >
             {project.type}
-          </p>
+          </motion.p>
 
           {/* Description */}
-          <p
+          <motion.p
+            variants={mob ? itemV : undefined}
             style={{
               fontSize: 16,
               lineHeight: 1.65,
@@ -200,10 +265,11 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
             }}
           >
             {project.summary}
-          </p>
+          </motion.p>
 
           {/* Stats row */}
-          <div
+          <motion.div
+            variants={mob ? itemV : undefined}
             style={{
               display: 'flex',
               gap: 0,
@@ -214,7 +280,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
           >
             {[
               { label: 'Année',  value: project.year },
-              { label: 'Type',   value: project.type.split('/')[0].trim() },
+              { label: 'Type',   value: typeShort },
               { label: 'Statut', value: project.status === 'wip' ? 'En cours' : 'En ligne' },
             ].map(({ label, value }, i, arr) => (
               <div
@@ -224,18 +290,41 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                   flex: 1,
                   padding: '14px 16px',
                   borderRight: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  overflow: 'hidden',
                 }}
               >
-                <div style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 10.5, color: '#64748b', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 4 }}>
+                <div style={{
+                  fontFamily: 'var(--font-geist-mono, ui-monospace)',
+                  fontSize: 10.5,
+                  color: '#64748b',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  marginBottom: 4,
+                }}>
                   {label}
                 </div>
-                <div className="proj-stat-value" style={{ fontSize: 18, fontWeight: 600, color: '#fff' }}>{value}</div>
+                <div
+                  className="proj-stat-value"
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 600,
+                    color: '#fff',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {value}
+                </div>
               </div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Stack chips */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}>
+          <motion.div
+            variants={mob ? itemV : undefined}
+            style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}
+          >
             {project.stack.map((tech) => (
               <span
                 key={tech}
@@ -254,10 +343,13 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                 {tech}
               </span>
             ))}
-          </div>
+          </motion.div>
 
           {/* CTAs */}
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <motion.div
+            variants={mob ? itemV : undefined}
+            style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}
+          >
             <a
               href={project.liveUrl}
               target="_blank"
@@ -310,7 +402,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                   padding: '13px 22px',
                   minHeight: 44,
                   borderRadius: 999,
-                  border: `1px solid rgba(255,255,255,0.12)`,
+                  border: '1px solid rgba(255,255,255,0.12)',
                   color: '#fff',
                   fontWeight: 500,
                   fontSize: 14,
@@ -333,12 +425,13 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                 GitHub
               </a>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Browser frame column */}
-        <div
+        {/* Colonne image — scale-in décalé sur mobile */}
+        <motion.div
           className="proj-browser-wrap proj-image-col"
+          variants={mob ? imageV : undefined}
           onPointerEnter={(e) => {
             if (e.pointerType !== 'mouse') return;
             const frame = e.currentTarget.querySelector('.browser-frame') as HTMLElement | null;
@@ -382,14 +475,20 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                   justifyContent: 'center',
                 }}
               >
-                <span style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 11, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                <span style={{
+                  fontFamily: 'var(--font-geist-mono, ui-monospace)',
+                  fontSize: 11,
+                  color: '#64748b',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}>
                   Aperçu bientôt disponible
                 </span>
               </div>
             )}
           </BrowserFrame>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

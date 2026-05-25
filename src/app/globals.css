@@ -143,25 +143,6 @@ body {
 }
 
 
-/* Career mobile indicator — caché sur desktop, visible sur mobile */
-.career-mobile-indicator {
-  display: none;
-}
-
-@media (max-width: 960px) {
-  .career-mobile-indicator {
-    display: block;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: rgba(2, 6, 23, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 14px clamp(20px, 4vw, 56px);
-    margin-bottom: 0;
-  }
-}
 
 /* Career desktop panel (1 card at a time) vs mobile stack (all cards) */
 .career-desktop-panel {
@@ -186,10 +167,11 @@ body {
   .career-nav-wrap {
     display: none !important;
   }
-  /* CareerCard : retire le minHeight desktop sur mobile */
+  /* CareerCard : retire le minHeight desktop + le borderTop (remplacé par MobileSeparator) */
   .career-card {
     min-height: auto !important;
     padding: clamp(32px, 4vw, 48px) 0 !important;
+    border-top: none !important;
   }
 }
 
@@ -263,11 +245,16 @@ body {
   }
 }
 
-/* Watermark projets : masqué jusqu'en tablette portrait incluse */
-@media (max-width: 768px) {
+/* Watermark projets : masqué sur tablette + mobile */
+@media (max-width: 960px) {
   .proj-watermark {
     display: none !important;
   }
+}
+
+/* Compteur mobile : caché par défaut, affiché par la media query 960px */
+.proj-mobile-counter {
+  display: none;
 }
 
 /* Project stats row — compact sur mobile */
@@ -280,10 +267,10 @@ body {
   }
 }
 
-/* BrowserFrame — aspect-ratio plus tall sur mobile + désactive transition et tilt 3D */
+/* BrowserFrame — aspect-ratio 16/9 sur tablette/mobile + désactive transition et tilt 3D */
 @media (max-width: 960px) {
   .browser-frame {
-    aspect-ratio: 4/3 !important;
+    aspect-ratio: 16/9 !important;
     transition: none !important;
     transform: none !important;
   }

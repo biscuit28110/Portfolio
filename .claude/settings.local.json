@@ -29,7 +29,20 @@
       "Bash(git worktree *)",
       "Bash(npx next *)",
       "Bash(npx playwright *)",
-      "Bash(python3 -c \"import playwright\")"
+      "Bash(python3 -c \"import playwright\")",
+      "Bash(ip addr *)",
+      "Bash(sudo ufw status)",
+      "Bash(sudo iptables -L INPUT --line-numbers -n)",
+      "Bash(sudo iptables -L INPUT -n --line-numbers)",
+      "Bash(sudo nft list ruleset)",
+      "Bash(sudo ss -tlnp)",
+      "Bash(nginx -v)",
+      "Bash(systemctl status *)",
+      "Bash(node -e \"const t = require\\('/home/traviss/projet_web/portfolio/Portfolio/node_modules/next/dist/server/config-shared.js'\\); console.log\\(JSON.stringify\\(Object.keys\\(t.defaultConfig || t\\), null, 2\\)\\)\")",
+      "Bash(node *)",
+      "Bash(awk 'NR>1 {printf \"%d\\\\n\", \"0x\" substr\\($2, index\\($2,\":\"\\)+1, 4\\)}')",
+      "Bash(python3 -c \"import sys; d=sys.stdin.read\\(\\); print\\('opacity:0:', d.count\\('opacity:0'\\)\\); print\\('opacity: 0:', d.count\\('opacity: 0'\\)\\)\")",
+      "Bash(python3 -c \"import sys; d=sys.stdin.read\\(\\); print\\(len\\(d\\), 'bytes'\\)\")"
     ]
   },
   "enableAllProjectMcpServers": true

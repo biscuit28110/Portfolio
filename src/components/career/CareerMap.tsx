@@ -1,14 +1,110 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ExperienceEntry } from '@/data/experience';
 import { CareerNav } from './CareerNav';
 import { CareerCard } from './CareerCard';
+import { EASE } from '@/lib/motion';
 
 type CareerMapProps = {
   entries: ExperienceEntry[];
 };
+
+function MobileSeparator({
+  filled,
+  active,
+  label,
+}: {
+  filled: boolean;
+  active: boolean;
+  label: string;
+}) {
+  return (
+    <div style={{ position: 'relative', height: 28, display: 'flex', alignItems: 'center' }}>
+      {/* Track */}
+      <div style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        height: 1,
+        background: 'rgba(255,255,255,0.06)',
+      }} />
+
+      {/* Fill — le pill est enfant et surfe sur son bord droit */}
+      <motion.div
+        animate={{
+          width: filled ? '100%' : '0%',
+          boxShadow: active
+            ? '0 0 14px 2px rgba(34,211,238,0.55), 0 0 4px rgba(34,211,238,0.85)'
+            : filled
+              ? '0 0 6px rgba(34,211,238,0.22)'
+              : '0 0 0px transparent',
+        }}
+        transition={{ duration: 0.55, ease: EASE }}
+        style={{
+          position: 'absolute',
+          left: 0,
+          height: 2,
+          background: 'linear-gradient(90deg, #22d3ee, #a78bfa)',
+          borderRadius: 1,
+          overflow: 'visible',
+        }}
+      >
+        <AnimatePresence>
+          {active && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.65, y: '-50%' }}
+              animate={{ opacity: 1, scale: 1,   y: '-50%' }}
+              exit={{    opacity: 0, scale: 0.65, y: '-50%' }}
+              transition={{ type: 'spring', damping: 18, stiffness: 260 }}
+              style={{
+                position: 'absolute',
+                right: 0,
+                top: '50%',
+                background: 'rgba(2, 6, 23, 0.84)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(34,211,238,0.28)',
+                borderRadius: 12,
+                overflow: 'hidden',
+                minWidth: 76,
+                zIndex: 10,
+              }}
+            >
+              {/* Fill interne qui se remplit de gauche à droite */}
+              <motion.div
+                initial={{ width: '0%' }}
+                animate={{ width: '100%' }}
+                transition={{ duration: 0.65, ease: EASE, delay: 0.08 }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(90deg, rgba(34,211,238,0.18), rgba(167,139,250,0.13))',
+                }}
+              />
+              {/* Label au-dessus du fill */}
+              <span style={{
+                position: 'relative',
+                zIndex: 1,
+                display: 'block',
+                padding: '5px 11px',
+                fontSize: 10,
+                fontFamily: 'var(--font-geist-mono, ui-monospace)',
+                fontWeight: 600,
+                color: '#22d3ee',
+                letterSpacing: '0.07em',
+                whiteSpace: 'nowrap',
+              }}>
+                {label}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  );
+}
 
 export function CareerMap({ entries }: CareerMapProps) {
   const [activeSlug, setActiveSlug] = useState(entries[0]?.slug ?? '');
@@ -65,109 +161,55 @@ export function CareerMap({ entries }: CareerMapProps) {
     setProgress(((idx + 1) / entries.length) * 100);
   };
 
+  const total = String(entries.length).padStart(2, '0');
+
   return (
-    <>
-      {/* Indicateur de progression — mobile uniquement */}
-      <div className="career-mobile-indicator">
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 10,
-          gap: 12,
-        }}>
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{
-              fontFamily: 'var(--font-geist-mono, ui-monospace)',
-              fontSize: 10,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#22d3ee',
-              marginBottom: 3,
-            }}>
-              {activeEntry?.company}
-            </div>
-            <div style={{
-              fontSize: 14,
-              fontWeight: 600,
-              color: '#fff',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}>
-              {activeEntry?.title}
-            </div>
-          </div>
-          <div style={{
-            fontFamily: 'var(--font-geist-mono, ui-monospace)',
-            fontSize: 11,
-            color: '#475569',
-            letterSpacing: '0.04em',
-            flexShrink: 0,
-          }}>
-            {activeIdx + 1}&thinsp;/&thinsp;{entries.length}
-          </div>
-        </div>
-        <div style={{
-          height: 2,
-          background: 'rgba(255,255,255,0.06)',
-          borderRadius: 2,
-          overflow: 'hidden',
-        }}>
-          <div style={{
-            height: '100%',
-            width: `${progress || (1 / entries.length) * 100}%`,
-            background: 'linear-gradient(90deg, #22d3ee, #a78bfa)',
-            borderRadius: 2,
-            transition: 'width 400ms cubic-bezier(.22,1,.36,1)',
-          }} />
-        </div>
+    <div
+      style={{ display: 'flex', alignItems: 'flex-start', gap: 80, position: 'relative' }}
+      className="career-map"
+    >
+      {/* Nav sticky — desktop uniquement */}
+      <div style={{ width: 320, flexShrink: 0, alignSelf: 'stretch' }}>
+        <CareerNav
+          entries={entries}
+          activeSlug={activeSlug}
+          progress={progress}
+          onSelect={handleNavSelect}
+        />
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: 80,
-          position: 'relative',
-        }}
-        className="career-map"
-      >
-        {/* Nav sticky — desktop uniquement, hauteur = panel desktop */}
-        <div style={{ width: 320, flexShrink: 0, alignSelf: 'stretch' }}>
-          <CareerNav
-            entries={entries}
-            activeSlug={activeSlug}
-            progress={progress}
-            onSelect={handleNavSelect}
-          />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {/* Desktop — 1 seule carte active, animée */}
+        <div className="career-desktop-panel">
+          <AnimatePresence mode="wait">
+            <CareerCard
+              key={activeSlug}
+              entry={activeEntry}
+              id={`card-${activeEntry.slug}`}
+              immediate
+            />
+          </AnimatePresence>
         </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Desktop — 1 seule carte active, animée */}
-          <div className="career-desktop-panel">
-            <AnimatePresence mode="wait">
+        {/* Mobile — cartes empilées avec séparateurs pill */}
+        <div className="career-mobile-stack">
+          {entries.map((entry, i) => (
+            <div key={entry.slug}>
+              {i > 0 && (
+                <MobileSeparator
+                  filled={activeIdx >= i}
+                  active={activeIdx === i}
+                  label={`${String(i + 1).padStart(2, '0')} · ${total}`}
+                />
+              )}
               <CareerCard
-                key={activeSlug}
-                entry={activeEntry}
-                id={`card-${activeEntry.slug}`}
-                immediate
-              />
-            </AnimatePresence>
-          </div>
-
-          {/* Mobile — toutes les cartes empilées */}
-          <div className="career-mobile-stack">
-            {entries.map((entry) => (
-              <CareerCard
-                key={entry.slug}
                 entry={entry}
                 id={`mobile-card-${entry.slug}`}
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

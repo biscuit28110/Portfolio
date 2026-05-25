@@ -23,7 +23,7 @@ export function SceneProgressIndicator({ projects, activeIndex, visible }: Scene
         transition: 'opacity 350ms ease',
         pointerEvents: visible ? 'auto' : 'none',
       }}
-      className="hidden min-[961px]:flex"
+      className="hidden min-[1100px]:flex"
       aria-hidden="true"
     >
       {projects.map((p, i) => {
