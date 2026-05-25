@@ -249,10 +249,27 @@ body {
   }
 }
 
-/* Watermark projets : masqué sur mobile */
-@media (max-width: 640px) {
+/* Watermark projets : masqué jusqu'en tablette portrait incluse */
+@media (max-width: 768px) {
   .proj-watermark {
     display: none !important;
+  }
+}
+
+/* Project stats row — compact sur mobile */
+@media (max-width: 560px) {
+  .proj-stat-cell {
+    padding: 10px 8px !important;
+  }
+  .proj-stat-value {
+    font-size: clamp(14px, 4vw, 18px) !important;
+  }
+}
+
+/* BrowserFrame — désactive la transition 3D coûteuse sur mobile */
+@media (max-width: 960px) {
+  .browser-frame {
+    transition: none !important;
   }
 }
 

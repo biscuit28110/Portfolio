@@ -9,7 +9,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      style={{ paddingTop: 'clamp(100px, 10vw, 140px)', position: 'relative' }}
+      style={{ paddingTop: 'clamp(60px, 10vw, 140px)', position: 'relative' }}
     >
       <BlobBg blobs={[
         { color: 'blue',   size: 520, top: '0',    left: '-160px',  opacity: 0.06 },
@@ -65,7 +65,7 @@ export default function Projects() {
           fontWeight: 600,
           fontSize: 'clamp(26px, 6vw, 36px)',
           lineHeight: 1.1,
-          letterSpacing: '-0.03em',
+          letterSpacing: '-0.02em',
           color: '#fff',
         }}>
           Des produits qui{' '}

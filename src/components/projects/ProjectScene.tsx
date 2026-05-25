@@ -149,8 +149,8 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
           <h3
             style={{
               fontWeight: 700,
-              fontSize: 'clamp(40px, 4.5vw, 72px)',
-              letterSpacing: '-0.04em',
+              fontSize: 'clamp(28px, 4.5vw, 72px)',
+              letterSpacing: '-0.03em',
               lineHeight: 1.0,
               color: '#fff',
               marginBottom: 20,
@@ -221,6 +221,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
             ].map(({ label, value }, i, arr) => (
               <div
                 key={label}
+                className="proj-stat-cell"
                 style={{
                   flex: 1,
                   padding: '14px 16px',
@@ -230,7 +231,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                 <div style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 10.5, color: '#64748b', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 4 }}>
                   {label}
                 </div>
-                <div style={{ fontSize: 18, fontWeight: 600, color: '#fff' }}>{value}</div>
+                <div className="proj-stat-value" style={{ fontSize: 18, fontWeight: 600, color: '#fff' }}>{value}</div>
               </div>
             ))}
           </div>
@@ -268,6 +269,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                 alignItems: 'center',
                 gap: 8,
                 padding: '13px 22px',
+                minHeight: 44,
                 borderRadius: 999,
                 background: `linear-gradient(135deg, ${accent.primary}, ${accent.secondary})`,
                 color: '#020617',
@@ -277,12 +279,14 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                 boxShadow: `0 12px 32px -8px ${accent.primary}60`,
                 transition: 'transform 250ms ease, box-shadow 250ms ease',
               }}
-              onMouseEnter={(e) => {
+              onPointerEnter={(e) => {
+                if (e.pointerType !== 'mouse') return;
                 const el = e.currentTarget as HTMLElement;
                 el.style.transform = 'translateY(-2px)';
                 el.style.boxShadow = `0 20px 48px -8px ${accent.secondary}60`;
               }}
-              onMouseLeave={(e) => {
+              onPointerLeave={(e) => {
+                if (e.pointerType !== 'mouse') return;
                 const el = e.currentTarget as HTMLElement;
                 el.style.transform = 'translateY(0)';
                 el.style.boxShadow = `0 12px 32px -8px ${accent.primary}60`;
@@ -306,6 +310,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                   alignItems: 'center',
                   gap: 8,
                   padding: '13px 22px',
+                  minHeight: 44,
                   borderRadius: 999,
                   border: `1px solid rgba(255,255,255,0.12)`,
                   color: '#fff',
@@ -314,12 +319,14 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
                   textDecoration: 'none',
                   transition: 'border-color 250ms ease, background 250ms ease',
                 }}
-                onMouseEnter={(e) => {
+                onPointerEnter={(e) => {
+                  if (e.pointerType !== 'mouse') return;
                   const el = e.currentTarget as HTMLElement;
                   el.style.borderColor = `${accent.primary}50`;
                   el.style.background = `${accent.primary}0a`;
                 }}
-                onMouseLeave={(e) => {
+                onPointerLeave={(e) => {
+                  if (e.pointerType !== 'mouse') return;
                   const el = e.currentTarget as HTMLElement;
                   el.style.borderColor = 'rgba(255,255,255,0.12)';
                   el.style.background = 'transparent';
@@ -334,14 +341,16 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
         {/* Browser frame column */}
         <div
           className="proj-browser-wrap proj-image-col"
-          onMouseEnter={(e) => {
+          onPointerEnter={(e) => {
+            if (e.pointerType !== 'mouse') return;
             const frame = e.currentTarget.querySelector('.browser-frame') as HTMLElement | null;
             if (frame) {
               frame.style.transform = 'perspective(2000px) rotateY(0) rotateX(0) translateY(-6px)';
               frame.style.boxShadow = `0 60px 120px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06), 0 0 60px -10px ${accent.primary}30`;
             }
           }}
-          onMouseLeave={(e) => {
+          onPointerLeave={(e) => {
+            if (e.pointerType !== 'mouse') return;
             const frame = e.currentTarget.querySelector('.browser-frame') as HTMLElement | null;
             if (frame) {
               frame.style.transform = 'perspective(2000px) rotateY(-3deg) rotateX(2deg)';
