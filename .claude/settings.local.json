@@ -17,7 +17,19 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git push *)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "Bash(git rm *)",
+      "WebFetch(domain:coolify.io)",
+      "Bash(curl -s -H \"Authorization: Bearer 1|G6OskPAm6evh1GpPXsBlUtILxrUNGL3Z5NADVGYOe51f8032\" https://coolify.tta-dev.fr/api/v1/deployments)",
+      "Bash(curl -s -H \"Authorization: Bearer 1|G6OskPAm6evh1GpPXsBlUtILxrUNGL3Z5NADVGYOe51f8032\" https://coolify.tta-dev.fr/api/v1/applications)",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -H \"Authorization: Bearer 1|G6OskPAm6evh1GpPXsBlUtILxrUNGL3Z5NADVGYOe51f8032\" \"https://coolify.tta-dev.fr/api/v1/applications/pp1fl6wwz61995tfevu2f0kp/deployments\")",
+      "Bash(curl -s -H \"Authorization: Bearer 1|G6OskPAm6evh1GpPXsBlUtILxrUNGL3Z5NADVGYOe51f8032\" \"https://coolify.tta-dev.fr/api/v1/deployments?application_uuid=pp1fl6wwz61995tfevu2f0kp\")",
+      "Bash(curl *)",
+      "Bash(git worktree *)",
+      "Bash(npx next *)",
+      "Bash(npx playwright *)",
+      "Bash(python3 -c \"import playwright\")"
     ]
   },
   "enableAllProjectMcpServers": true
