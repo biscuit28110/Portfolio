@@ -36,6 +36,22 @@ couvrent la majorité de ces seuils, mais si un bug est suspecté précisément 
 breakpoint (ex: 860px), envisage un viewport custom via `--viewports` avec une valeur
 ajoutée temporairement dans `config.json`.
 
+## Limitations connues de la capture (ne pas signaler comme bug sans vérifier)
+- Éléments profondément scrollés dans une section plus haute que le viewport (ex: stats
+  animées tout en bas d'About) : `locator.screenshot()` doit scroller en interne au-delà
+  du viewport initial pour capturer tout l'élément, sans attente supplémentaire à chaque
+  étape. Un compteur/animation whileInView positionné loin dans une section peut donc
+  apparaître dans un état transitoire (ex: "0" avant la fin de l'animation) même si le
+  contenu est correct pour un vrai utilisateur qui scrolle normalement. Avant de signaler
+  un tel cas comme bug, vérifier manuellement (scroll réel + délai) plutôt que de se fier
+  uniquement au screenshot.
+- Sections à "scènes" empilées en `position: sticky` beaucoup plus hautes que le viewport
+  (ex: Projects) : `capture.js` scrolle nativement (`scrollIntoView({block:'start'})`) et
+  attend la stabilisation du scroll + ~1.2s pour les animations Framer Motion avant de
+  capturer, ce qui couvre le cas normal. Si un élément semble quand même manquant, vérifier
+  en direct avant de conclure à un bug (voir historique : la carte projet "Maison Minelle"
+  et le titre "À propos" avaient été signalés à tort avant ce correctif).
+
 ## Design system (à ne pas signaler comme bug)
 Voir aussi `CLAUDE.md` à la racine. Résumé utilisé dans le prompt d'analyse vision :
 - Thème sombre : `slate-950/900/800`, texte blanc/slate-300/400

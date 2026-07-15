@@ -34,6 +34,31 @@ async function waitForServer(url, timeoutMs) {
   return false;
 }
 
+// locator.scrollIntoViewIfNeeded() peut atterrir n'importe où dans une section
+// (ex: sections à scènes "sticky" empilées beaucoup plus hautes que le viewport),
+// contrairement à un vrai scroll utilisateur ou un clic de nav (scrollIntoView natif,
+// aligné en haut). On force donc un alignement "start" natif, on attend que le scroll
+// se stabilise (le CSS scroll-behavior:smooth anime), puis on laisse le temps aux
+// animations whileInView/spring de Framer Motion de se déclencher et se stabiliser.
+async function scrollSectionIntoView(page, anchor) {
+  await page.evaluate((sel) => {
+    document.querySelector(sel)?.scrollIntoView({ block: "start" });
+  }, anchor);
+  let lastY = -1, stable = 0;
+  for (let i = 0; i < 30; i++) {
+    const y = await page.evaluate(() => window.scrollY);
+    if (Math.abs(y - lastY) < 1) {
+      stable++;
+      if (stable >= 3) break;
+    } else {
+      stable = 0;
+    }
+    lastY = y;
+    await page.waitForTimeout(100);
+  }
+  await page.waitForTimeout(1200); // laisse les animations Framer Motion (whileInView, spring) se stabiliser
+}
+
 async function isServerUp(url) {
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(2000) });
@@ -153,8 +178,7 @@ async function main() {
       for (const sec of sections) {
         const locator = page.locator(sec.anchor);
         try {
-          await locator.scrollIntoViewIfNeeded({ timeout: 5000 });
-          await page.waitForTimeout(400); // laisse les animations Framer Motion se stabiliser
+          await scrollSectionIntoView(page, sec.anchor);
           const secFile = `${sec.id}__${vp.id}.png`;
           await locator.screenshot({ path: path.join(outDir, secFile) });
           manifestFiles.push({ file: secFile, section: sec.id, viewport: vp.id, width: vp.width, height: vp.height });
