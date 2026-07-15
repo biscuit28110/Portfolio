@@ -1,4 +1,5 @@
 import { SkillItem } from '@/data/skills';
+import { SKILL_ICONS } from '@/data/icons';
 
 type SkillChipProps = {
   skill: SkillItem;
@@ -7,6 +8,7 @@ type SkillChipProps = {
 
 export function SkillChip({ skill, color }: SkillChipProps) {
   if (skill.type === 'logo') {
+    const icon = SKILL_ICONS[skill.iconSlug];
     return (
       <span
         className="skill-chip skill-chip--logo"
@@ -27,26 +29,29 @@ export function SkillChip({ skill, color }: SkillChipProps) {
           const el = e.currentTarget as HTMLElement;
           el.style.opacity = '1';
           el.style.transform = 'scale(1.05)';
-          const img = el.querySelector('img') as HTMLImageElement | null;
-          if (img) img.style.filter = `drop-shadow(0 0 12px ${color}) drop-shadow(0 0 24px ${color}80)`;
+          const svg = el.querySelector('svg') as SVGElement | null;
+          if (svg) svg.style.filter = `drop-shadow(0 0 12px ${color}) drop-shadow(0 0 24px ${color}80)`;
         }}
         onPointerLeave={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.opacity = '0.85';
           el.style.transform = 'scale(1)';
-          const img = el.querySelector('img') as HTMLImageElement | null;
-          if (img) img.style.filter = 'none';
+          const svg = el.querySelector('svg') as SVGElement | null;
+          if (svg) svg.style.filter = 'none';
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={skill.iconUrl}
-          alt={skill.name}
-          width={26}
-          height={26}
-          style={{ display: 'block', objectFit: 'contain', transition: 'filter 250ms ease' }}
-          loading="lazy"
-        />
+        {icon && (
+          <svg
+            width={26}
+            height={26}
+            viewBox="0 0 24 24"
+            role="img"
+            aria-label={skill.name}
+            style={{ display: 'block', flexShrink: 0, transition: 'filter 250ms ease' }}
+          >
+            <path d={icon.path} fill={skill.color} />
+          </svg>
+        )}
         {skill.name}
       </span>
     );

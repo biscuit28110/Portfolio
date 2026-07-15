@@ -1,5 +1,5 @@
 export type SkillItem =
-  | { type: 'logo'; name: string; iconUrl: string }
+  | { type: 'logo'; name: string; iconSlug: string; color: string }
   | { type: 'mono'; name: string };
 
 export type MarqueeBand = {
@@ -19,14 +19,14 @@ export const marqueeBands: MarqueeBand[] = [
     speed: '38s',
     direction: 'rtl',
     skills: [
-      { type: 'logo', name: 'Next.js',       iconUrl: 'https://cdn.simpleicons.org/nextdotjs/ffffff' },
-      { type: 'logo', name: 'React 19',      iconUrl: 'https://cdn.simpleicons.org/react/61DAFB' },
-      { type: 'logo', name: 'TypeScript',    iconUrl: 'https://cdn.simpleicons.org/typescript/3178C6' },
-      { type: 'logo', name: 'Tailwind v4',   iconUrl: 'https://cdn.simpleicons.org/tailwindcss/06B6D4' },
-      { type: 'logo', name: 'Framer Motion', iconUrl: 'https://cdn.simpleicons.org/framer/0055FF' },
-      { type: 'logo', name: 'JavaScript',    iconUrl: 'https://cdn.simpleicons.org/javascript/F7DF1E' },
-      { type: 'logo', name: 'HTML5',         iconUrl: 'https://cdn.simpleicons.org/html5/E34F26' },
-      { type: 'logo', name: 'CSS3',          iconUrl: 'https://cdn.simpleicons.org/css3/1572B6' },
+      { type: 'logo', name: 'Next.js',       iconSlug: 'nextdotjs',   color: '#ffffff' },
+      { type: 'logo', name: 'React 19',      iconSlug: 'react',       color: '#61DAFB' },
+      { type: 'logo', name: 'TypeScript',    iconSlug: 'typescript',  color: '#3178C6' },
+      { type: 'logo', name: 'Tailwind v4',   iconSlug: 'tailwindcss', color: '#06B6D4' },
+      { type: 'logo', name: 'Framer Motion', iconSlug: 'framer',      color: '#0055FF' },
+      { type: 'logo', name: 'JavaScript',    iconSlug: 'javascript',  color: '#F7DF1E' },
+      { type: 'logo', name: 'HTML5',         iconSlug: 'html5',       color: '#E34F26' },
+      { type: 'logo', name: 'CSS3',          iconSlug: 'css',         color: '#1572B6' },
       { type: 'mono', name: 'App Router' },
       { type: 'mono', name: 'Server Components' },
     ],
@@ -38,12 +38,12 @@ export const marqueeBands: MarqueeBand[] = [
     speed: '46s',
     direction: 'ltr',
     skills: [
-      { type: 'logo', name: 'Node.js',    iconUrl: 'https://cdn.simpleicons.org/nodedotjs/339933' },
-      { type: 'logo', name: 'PostgreSQL', iconUrl: 'https://cdn.simpleicons.org/postgresql/4169E1' },
-      { type: 'logo', name: 'Prisma',     iconUrl: 'https://cdn.simpleicons.org/prisma/2D3748' },
-      { type: 'logo', name: 'Supabase',   iconUrl: 'https://cdn.simpleicons.org/supabase/3FCF8E' },
-      { type: 'logo', name: 'Python',     iconUrl: 'https://cdn.simpleicons.org/python/3776AB' },
-      { type: 'logo', name: 'Express',    iconUrl: 'https://cdn.simpleicons.org/express/ffffff' },
+      { type: 'logo', name: 'Node.js',    iconSlug: 'nodedotjs',  color: '#339933' },
+      { type: 'logo', name: 'PostgreSQL', iconSlug: 'postgresql', color: '#4169E1' },
+      { type: 'logo', name: 'Prisma',     iconSlug: 'prisma',     color: '#2D3748' },
+      { type: 'logo', name: 'Supabase',   iconSlug: 'supabase',   color: '#3FCF8E' },
+      { type: 'logo', name: 'Python',     iconSlug: 'python',     color: '#3776AB' },
+      { type: 'logo', name: 'Express',    iconSlug: 'express',    color: '#ffffff' },
       { type: 'mono', name: 'REST' },
       { type: 'mono', name: 'CRUD' },
       { type: 'mono', name: 'JSON' },
@@ -56,13 +56,13 @@ export const marqueeBands: MarqueeBand[] = [
     speed: '42s',
     direction: 'rtl',
     skills: [
-      { type: 'logo', name: 'Linux',          iconUrl: 'https://cdn.simpleicons.org/linux/FCC624' },
-      { type: 'logo', name: 'Docker',         iconUrl: 'https://cdn.simpleicons.org/docker/2496ED' },
-      { type: 'logo', name: 'Nginx',          iconUrl: 'https://cdn.simpleicons.org/nginx/009639' },
-      { type: 'logo', name: 'Ubuntu',         iconUrl: 'https://cdn.simpleicons.org/ubuntu/E95420' },
-      { type: 'logo', name: 'Debian',         iconUrl: 'https://cdn.simpleicons.org/debian/A81D33' },
-      { type: 'logo', name: 'Vercel',         iconUrl: 'https://cdn.simpleicons.org/vercel/ffffff' },
-      { type: 'logo', name: 'GitHub Actions', iconUrl: 'https://cdn.simpleicons.org/githubactions/2088FF' },
+      { type: 'logo', name: 'Linux',          iconSlug: 'linux',         color: '#FCC624' },
+      { type: 'logo', name: 'Docker',         iconSlug: 'docker',        color: '#2496ED' },
+      { type: 'logo', name: 'Nginx',          iconSlug: 'nginx',         color: '#009639' },
+      { type: 'logo', name: 'Ubuntu',         iconSlug: 'ubuntu',        color: '#E95420' },
+      { type: 'logo', name: 'Debian',         iconSlug: 'debian',        color: '#A81D33' },
+      { type: 'logo', name: 'Vercel',         iconSlug: 'vercel',        color: '#ffffff' },
+      { type: 'logo', name: 'GitHub Actions', iconSlug: 'githubactions', color: '#2088FF' },
       { type: 'mono', name: 'Hostinger' },
       { type: 'mono', name: 'VPS' },
       { type: 'mono', name: 'Coolify' },
@@ -76,7 +76,7 @@ export const marqueeBands: MarqueeBand[] = [
     speed: '50s',
     direction: 'ltr',
     skills: [
-      { type: 'logo', name: 'Citrix',           iconUrl: 'https://cdn.simpleicons.org/citrix/452170' },
+      { type: 'logo', name: 'Citrix',           iconSlug: 'citrix', color: '#452170' },
       { type: 'mono', name: 'Windows' },
       { type: 'mono', name: 'Office 365' },
       { type: 'mono', name: 'Exchange' },

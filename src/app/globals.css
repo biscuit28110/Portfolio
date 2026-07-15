@@ -328,6 +328,11 @@ body {
     grid-template-columns: 1fr;
     padding: 20px;
   }
+  /* Les champs span-2 (ex: textarea message) forcent sinon une colonne
+     implicite qui fait remonter les champs span-1 voisins sur la même ligne. */
+  .cf-field {
+    grid-column: 1 / -1 !important;
+  }
   .cf-submit-wrap button {
     width: 100%;
     justify-content: center;
