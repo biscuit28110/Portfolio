@@ -1,9 +1,12 @@
-const STATS = [
-  { label: 'Frontend', color: '#22d3ee', count: 10 },
-  { label: 'Backend',  color: '#a78bfa', count: 9 },
-  { label: 'Infra',    color: '#60a5fa', count: 11 },
-  { label: 'IT Ops',   color: '#34d399', count: 10 },
-];
+import { marqueeBands } from '@/data/skills';
+
+const SHORT_LABELS = ['Frontend', 'Backend', 'Infra', 'IT Ops'];
+
+const STATS = marqueeBands.map((band, i) => ({
+  label: SHORT_LABELS[i] ?? band.label,
+  color: band.color,
+  count: band.skills.length,
+}));
 
 export function SkillsStatsFooter() {
   return (
