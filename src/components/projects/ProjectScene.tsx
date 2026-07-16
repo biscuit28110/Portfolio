@@ -53,12 +53,28 @@ function useIsMobile() {
 // position: sticky ne s'active jamais ici : html/body ont overflow-x:hidden
 // (nécessaire pour un bug de rebond horizontal iOS Safari), et n'importe quel
 // ancêtre avec un overflow non-visible empêche le sticky natif de s'accrocher.
-// On pilote donc le pin en JS (fixed tant que le wrapper couvre le viewport,
-// puis absolute en bas du wrapper une fois dépassé) — indépendant de ce piège.
+// On pilote donc le pin en JS, indépendant de ce piège CSS.
+//
+// Effet de recouvrement total : une fois entrée (rect.top <= 0), une scène
+// reste fixed tant qu'elle n'est pas entièrement recouverte par la SUIVANTE
+// (z-index plus élevé, qui glisse naturellement vers le haut via le flow
+// normal — déjà synchronisée au scroll). Comme la scène du dessous ne bouge
+// pas pendant qu'elle est recouverte, il n'y a jamais de moment où les deux
+// sont partiellement visibles côte à côte (le vide qu'on avait avant).
+//
+// Chaque scène doit néanmoins finir par céder la place (sinon l'avant-
+// dernière reste bloquée à l'écran pour toujours une fois la dernière
+// partie). Le seuil de sortie diffère :
+// - dernière scène (rien pour la recouvrir) : sort dès rect.bottom <= vh,
+//   pour un retrait progressif et visible sur un écran de scroll.
+// - scènes intermédiaires : sortent seulement à rect.bottom <= 0, c'est-à-
+//   dire une fois entièrement recouvertes par la suivante — le saut est
+//   donc invisible, caché derrière elle.
 function usePinnedScene(
   wrapRef: React.RefObject<HTMLDivElement | null>,
   sceneRef: React.RefObject<HTMLDivElement | null>,
-  enabled: boolean
+  enabled: boolean,
+  isLast: boolean
 ) {
   useLayoutEffect(() => {
     const scene = sceneRef.current;
@@ -69,12 +85,13 @@ function usePinnedScene(
     function apply() {
       const rect = wrap!.getBoundingClientRect();
       const vh = window.innerHeight;
-      if (rect.top <= 0 && rect.bottom > vh) {
-        Object.assign(scene!.style, { position: 'fixed', top: '0', bottom: '', left: '0', right: '0' });
-      } else if (rect.top > 0) {
+      const leaveThreshold = isLast ? vh : 0;
+      if (rect.top > 0) {
         Object.assign(scene!.style, { position: 'relative', top: '', bottom: '', left: '', right: '' });
-      } else {
+      } else if (rect.bottom <= leaveThreshold) {
         Object.assign(scene!.style, { position: 'absolute', top: '', bottom: '0', left: '0', right: '0' });
+      } else {
+        Object.assign(scene!.style, { position: 'fixed', top: '0', bottom: '', left: '0', right: '0' });
       }
       ticking = false;
     }
@@ -92,7 +109,7 @@ function usePinnedScene(
       window.removeEventListener('resize', onScroll);
       Object.assign(scene!.style, { position: '', top: '', bottom: '', left: '', right: '' });
     };
-  }, [enabled, wrapRef, sceneRef]);
+  }, [enabled, isLast, wrapRef, sceneRef]);
 }
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -111,7 +128,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
-  usePinnedScene(wrapRef, sceneRef, !mob);
+  usePinnedScene(wrapRef, sceneRef, !mob, index === total);
 
   // Alternance gauche/droite pour l'effet "jeu de cartes retourné"
   const flipDir = index % 2 === 0 ? 85 : -85;
