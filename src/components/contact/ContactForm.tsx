@@ -135,7 +135,7 @@ export function ContactForm() {
         ))}
 
         {/* Submit */}
-        <div className="cf-submit-wrap" style={{ gridColumn: 'span 2', display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="cf-submit-wrap" style={{ gridColumn: 'span 2', display: 'flex', justifyContent: 'center' }}>
           <button
             type="submit"
             disabled={sending}

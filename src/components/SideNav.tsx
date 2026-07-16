@@ -59,6 +59,7 @@ function MailIcon() {
 export function SideNav() {
   const [active, setActive] = useState('#top');
   const [hovered, setHovered] = useState<string | null>(null);
+  const [hiddenBySkills, setHiddenBySkills] = useState(false);
 
   useEffect(() => {
     const sections = NAV_ITEMS.map((item) => {
@@ -85,6 +86,21 @@ export function SideNav() {
     return () => observer.disconnect();
   }, []);
 
+  // Les bandeaux de compétences défilent bord à bord (edge-to-edge), sans la
+  // marge qui protège le menu ailleurs sur le site : on le masque le temps
+  // que la section soit à l'écran plutôt que de casser l'effet plein écran.
+  useEffect(() => {
+    const skills = document.getElementById('skills');
+    if (!skills) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setHiddenBySkills(entry.isIntersecting),
+      { threshold: 0.15 }
+    );
+    observer.observe(skills);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <nav
       aria-label="Navigation principale"
@@ -98,6 +114,9 @@ export function SideNav() {
         gap: 10,
         maxWidth: 'calc(100vw - 32px)',
         overflow: 'visible', /* le pill doit être visible, mais limité par max-width */
+        opacity: hiddenBySkills ? 0 : 1,
+        pointerEvents: hiddenBySkills ? 'none' : 'auto',
+        transition: 'opacity 300ms ease',
       }}
       className="hidden min-[861px]:flex"
     >
