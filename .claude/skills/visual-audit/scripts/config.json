@@ -1,0 +1,20 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "devCommand": "npm",
+  "devArgs": ["run", "dev"],
+  "serverStartTimeoutMs": 60000,
+  "outDir": ".visual-audit",
+  "sections": [
+    { "id": "hero", "anchor": "#hero", "label": "Hero / Navbar" },
+    { "id": "about", "anchor": "#about", "label": "About" },
+    { "id": "skills", "anchor": "#skills", "label": "Skills" },
+    { "id": "projects", "anchor": "#projects", "label": "Projects" },
+    { "id": "experience", "anchor": "#experience", "label": "Experience" },
+    { "id": "contact", "anchor": "#contact", "label": "Contact" }
+  ],
+  "viewports": [
+    { "id": "mobile", "width": 375, "height": 812, "label": "Mobile (iPhone 13)" },
+    { "id": "tablet", "width": 768, "height": 1024, "label": "Tablette (iPad)" },
+    { "id": "desktop", "width": 1440, "height": 900, "label": "Desktop" }
+  ]
+}
