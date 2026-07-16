@@ -282,6 +282,17 @@ body {
   gap: 64px;
 }
 
+/* Marge de scroll pour l'effet de pin desktop : .proj-scene (position: sticky)
+   a besoin qu'un ancêtre soit plus haut que lui pour avoir de quoi "s'accrocher" ;
+   sans ça le sticky n'a jamais l'occasion de s'activer (il reste toujours
+   à sa position de flow normale). */
+@media (min-width: 961px) {
+  .proj-scene-wrap {
+    position: relative;
+    height: 210vh;
+  }
+}
+
 /* Project scenes : 1 colonne + retire le sticky sur mobile */
 @media (max-width: 960px) {
   .proj-scene {

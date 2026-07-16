@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ProjectEntry } from '@/data/projects';
 import { BrowserFrame } from '@/components/ui/BrowserFrame';
@@ -50,6 +50,68 @@ function useIsMobile() {
   return mob;
 }
 
+// position: sticky ne s'active jamais ici : html/body ont overflow-x:hidden
+// (nécessaire pour un bug de rebond horizontal iOS Safari), et n'importe quel
+// ancêtre avec un overflow non-visible empêche le sticky natif de s'accrocher.
+// On pilote donc le pin en JS, indépendant de ce piège CSS.
+//
+// Effet de recouvrement total : une fois entrée (rect.top <= 0), une scène
+// reste fixed tant qu'elle n'est pas entièrement recouverte par la SUIVANTE
+// (z-index plus élevé, qui glisse naturellement vers le haut via le flow
+// normal — déjà synchronisée au scroll). Comme la scène du dessous ne bouge
+// pas pendant qu'elle est recouverte, il n'y a jamais de moment où les deux
+// sont partiellement visibles côte à côte (le vide qu'on avait avant).
+//
+// Chaque scène doit néanmoins finir par céder la place (sinon l'avant-
+// dernière reste bloquée à l'écran pour toujours une fois la dernière
+// partie). Le seuil de sortie diffère :
+// - dernière scène (rien pour la recouvrir) : sort dès rect.bottom <= vh,
+//   pour un retrait progressif et visible sur un écran de scroll.
+// - scènes intermédiaires : sortent seulement à rect.bottom <= 0, c'est-à-
+//   dire une fois entièrement recouvertes par la suivante — le saut est
+//   donc invisible, caché derrière elle.
+function usePinnedScene(
+  wrapRef: React.RefObject<HTMLDivElement | null>,
+  sceneRef: React.RefObject<HTMLDivElement | null>,
+  enabled: boolean,
+  isLast: boolean
+) {
+  useLayoutEffect(() => {
+    const scene = sceneRef.current;
+    const wrap = wrapRef.current;
+    if (!enabled || !scene || !wrap) return;
+
+    let ticking = false;
+    function apply() {
+      const rect = wrap!.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const leaveThreshold = isLast ? vh : 0;
+      if (rect.top > 0) {
+        Object.assign(scene!.style, { position: 'relative', top: '', bottom: '', left: '', right: '' });
+      } else if (rect.bottom <= leaveThreshold) {
+        Object.assign(scene!.style, { position: 'absolute', top: '', bottom: '0', left: '0', right: '0' });
+      } else {
+        Object.assign(scene!.style, { position: 'fixed', top: '0', bottom: '', left: '0', right: '0' });
+      }
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(apply);
+      }
+    }
+    apply();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      Object.assign(scene!.style, { position: '', top: '', bottom: '', left: '', right: '' });
+    };
+  }, [enabled, isLast, wrapRef, sceneRef]);
+}
+
 // ───────────────────────────────────────────────────────────────────────────
 
 type ProjectSceneProps = {
@@ -64,6 +126,10 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
   const sceneNum = String(index).padStart(2, '0');
   const urlDisplay = project.liveUrl.replace(/^https?:\/\//, '');
 
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  usePinnedScene(wrapRef, sceneRef, !mob, index === total);
+
   // Alternance gauche/droite pour l'effet "jeu de cartes retourné"
   const flipDir = index % 2 === 0 ? 85 : -85;
   const cardVariants = makeCardV(flipDir);
@@ -72,19 +138,20 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
   const typeShort = project.type.split(/[/·]/)[0].trim();
 
   return (
+    <div className="proj-scene-wrap" ref={wrapRef}>
     <div
+      ref={sceneRef}
       id={`scene-${project.slug}`}
       className="proj-scene"
       style={{
-        position: 'sticky',
-        top: 0,
+        position: 'relative',
         minHeight: '100vh',
         padding: '80px 0',
         display: 'flex',
         alignItems: 'center',
         background: '#020617',
         isolation: 'isolate',
-        zIndex: 1,
+        zIndex: index,
       }}
     >
       {/* Wrapper décoratif — overflow: hidden (compatible iOS Safari, remplace clip) */}
@@ -489,6 +556,7 @@ export function ProjectScene({ project, index, total }: ProjectSceneProps) {
           </BrowserFrame>
         </motion.div>
       </motion.div>
+    </div>
     </div>
   );
 }
