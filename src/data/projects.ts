@@ -89,6 +89,7 @@ export const projects: ProjectEntry[] = [
     summary:
       'Boutique e-commerce personnelle construite avec Next.js, en cours de développement avec une stack moderne.',
     liveUrl: 'https://boutique.tta-dev.fr',
+    desktopImage: '/assets/boutiquettadev/boutiquettadev.png',
     stack: ['Next.js', 'TypeScript', 'Tailwind', 'Custom'],
     highlights: [
       'Architecture e-commerce moderne avec Next.js App Router',
