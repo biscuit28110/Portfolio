@@ -65,7 +65,12 @@ export function MarqueeBand({ band }: MarqueeBandProps) {
           trackRef.current.style.animationPlayState = 'running';
       }}
     >
-      {/* Left label overlay */}
+      {/* Left label overlay — largeur fixe (pas minWidth) et alignée sur le
+          padding-left du track (.marquee-track) : sinon le texte du label
+          peut pousser la boîte plus large que la zone que le track laisse
+          libre, et le dégradé (calculé en % de la largeur de la boîte) ne
+          masque plus assez loin — les logos qui défilent redeviennent
+          visibles à travers le label pendant la boucle. */}
       <div
         className="marquee-label"
         style={{
@@ -78,8 +83,9 @@ export function MarqueeBand({ band }: MarqueeBandProps) {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '0 32px 0 clamp(20px, 4vw, 56px)',
-          background: `linear-gradient(to right, #020617 60%, transparent)`,
-          minWidth: 200,
+          background: `linear-gradient(to right, #020617 85%, transparent)`,
+          width: 240,
+          overflow: 'hidden',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
@@ -95,11 +101,23 @@ export function MarqueeBand({ band }: MarqueeBandProps) {
               animation: 'pulse-dot 2.4s ease-in-out infinite',
             }}
           />
-          <span className="marquee-label-text" style={{ fontWeight: 600, fontSize: 14, color: '#fff', letterSpacing: '-0.01em' }}>
+          <span
+            className="marquee-label-text"
+            style={{
+              fontWeight: 600, fontSize: 14, color: '#fff', letterSpacing: '-0.01em',
+              whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+            }}
+          >
             {band.label}
           </span>
         </div>
-        <span className="marquee-label-text" style={{ fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 11, color: band.color, letterSpacing: '0.04em' }}>
+        <span
+          className="marquee-label-text"
+          style={{
+            fontFamily: 'var(--font-geist-mono, ui-monospace)', fontSize: 11, color: band.color, letterSpacing: '0.04em',
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          }}
+        >
           {band.sub}
         </span>
       </div>
