@@ -276,9 +276,13 @@ body {
   }
 }
 
-/* Project grid — desktop (valeurs de base, hors inline style) */
+/* Project grid — desktop (valeurs de base, hors inline style)
+   minmax(0, ...) plutôt que 0.95fr/1.35fr seuls : sans le 0 explicite, la
+   taille min. implicite d'une piste "fr" vaut "auto", qui se calcule sur le
+   min-content du contenu — ici le texte d'URL en nowrap dans BrowserFrame,
+   qui peut dépasser la colonne même si visuellement coupé par l'ellipsis. */
 .proj-scene__grid {
-  grid-template-columns: 0.95fr 1.35fr;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
   gap: 64px;
 }
 
@@ -302,12 +306,16 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     z-index: auto !important;
     isolation: auto !important;
+    flex-direction: column !important; /* sinon le compteur "01/04" et la grille
+      se retrouvent côte à côte (flex row par défaut, jamais overridé ici) */
+    align-items: stretch !important; /* align-items:center (inline) réduirait
+      sinon les enfants à leur largeur de contenu au lieu de 100% */
   }
   .proj-scene:first-child {
     border-top: none;
   }
   .proj-scene__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px;
   }
   /* Image avant le texte sur mobile */
